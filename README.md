@@ -1,4 +1,4 @@
-# docker-rdkit
+# daverona/rdkit
 
 
 ```bash
