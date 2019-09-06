@@ -13,7 +13,7 @@ docker container run --rm \
 
 export RDBASE=/path/to/your/rdkit
   
-cp -R rdkit ${RDBASE}  
+sudo cp -R rdkit ${RDBASE}  
 
 sudo apt-get install --yes --quiet --no-install-recommends \
   libboost-iostreams1.65.1 \
@@ -29,6 +29,8 @@ sudo apt-get install --yes --quiet --no-install-recommends \
 
 sudo ln -s ${RDBASE}/lib/python3.6/site-packages/rdkit \
   /usr/local/lib/python3.6/dist-packages/rdkit
+
+sudo bash -c 'echo "export LD_LIBRARY_PATH" > /etc/profile.d/rdkit.sh'
 
 echo 'export LD_LIBRARY_PATH="'${RDBASE}'/lib:${LD_LIBRARY_PATH}"' \
   > /etc/profile.d/rdkit.sh
