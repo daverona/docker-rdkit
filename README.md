@@ -12,9 +12,9 @@ docker container run --rm \
   cp -R /usr/local/rdkit/Release_2019_03_4 /data/rdkit 
 ```
 
-```
-&& ln -s ${RDBASE}/lib/python3.6/site-packages/rdkit \
-  /usr/local/lib/python3.6/dist-packages/rdkit \
-&& echo 'export LD_LIBRARY_PATH="'${RDBASE}'/lib:${LD_LIBRARY_PATH}"' \
-  > /etc/profile.d/rdkit.sh \
+```bash
+ln -s ${RDBASE}/lib/python3.6/site-packages/rdkit \
+  /usr/local/lib/python3.6/dist-packages/rdkit
+echo 'export LD_LIBRARY_PATH="'${RDBASE}'/lib:${LD_LIBRARY_PATH}"' \
+  > /etc/profile.d/rdkit.sh
 ```
