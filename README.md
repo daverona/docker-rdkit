@@ -2,15 +2,14 @@
 
 
 ```bash
-docker image build . --tag arontier/rdkit:2019.03.2-ubuntu18.04
+docker image build . --tag daverona/rdkit:2019.03.4-ubuntu18.04
 ```
 
 ```bash
-docker container run --rm -it --name rdkit arontier/rdkit:2019_03_2-ubuntu:18.04
-```
-
-```bash
-docker cp rdkit:/usr/local/rdkit/Release_2019_03_2/ rdkit
+docker container run --rm \
+  --volume $PWD:/data \
+  daverona/rdkit:2019.03.4-ubuntu:18.04 \
+  cp -R /usr/local/rdkit/Release_2019_03_4 /data/rdkit 
 ```
 
 ```
