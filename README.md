@@ -31,7 +31,7 @@ docker image build \
 When you build the image, you can specify RDKit version as shown above.
 If you don't specify the value of build argument `RDKIT_VERSION`,
 Release_2019_03_4 will be used. If you specify `RDKIT_VERSION`, don't forget
-to change the tag name.
+to change the tag name accordingly.
 
 ## Quick Start
 
@@ -53,13 +53,15 @@ docker container run --rm \
   python3
 ```
 
+If you quit Python shell, you will exit the container.
+
 ## Usage
 
 ### Using as Running Environment
 
-This section explains how to use RDKit library in the container.
-You run the container with your Python source (not RDKit library source itself but
-some source written in Python 3 using RDKit library) mounted to the container:
+You can run the container with your Python source (not RDKit library source
+itself but some source written in Python 3 using RDKit library) mounted to the
+container:
 
 ```bash
 docker container run --rm \
@@ -83,11 +85,12 @@ when run the container:
 docker container run --rm \
   ...
   --volume /host/path/to/your/src:/var/local \
-  --volume /another/directory:/srv
+  --volume /host/path/to/data:/srv \
   ...
 ```
 
-You will get the files under /another/directory on your machine.
+You will get the files under /host/path/to/data on your machine as your source
+generates these files.
 
 ### Using as Building Environment
 
