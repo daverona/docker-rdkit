@@ -20,8 +20,8 @@ RUN apt-get update \
     python3.6-dev \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 1. Install packages required in RDKit build environment
-# 2. Download and untar RDKit source file and run cmake
+# 1. Install packages required to build RDKit
+# 2. Download, decompress RDKit source and run cmake
 # 3. Build, install and test RDKit
 # 4. Remove packages installed to build RDKit
 # @see https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md#linux-and-os-x
@@ -38,7 +38,7 @@ RUN build_deps="\
     libeigen3-dev=3.3.4-4 \
     wget=1.19.4-1ubuntu2.2" \
   && apt-get update \
-  && apt-get install --yes --quiet $build_deps \
+  && apt-get install --yes --quiet --no-install-recommends $build_deps \
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
   && wget --quiet https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz \
   && rm -rf ~/.wget-hsts \
