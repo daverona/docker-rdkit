@@ -1,9 +1,11 @@
 # daverona/rdkit
 
+[![pipeline status](https://gitlab.com/toscana/docker/rdkit/badges/master/pipeline.svg)](https://gitlab.com/toscana/docker/rdkit/commits/master)
+
 * GitLab source repository: [https://gitlab.com/toscana/docker/rdkit](https://gitlab.com/toscana/docker/rdkit)
 * Docker Hub repository: [https://hub.docker.com/r/daverona/rdkit](https://hub.docker.com/r/daverona/rdkit)
 
-This is a Docker image of RDKit. This image provides:
+This is a Docker image of RDKit (Open-Source Cheminformatics Software) library. This image provides:
 
 * [RDKit](https://github.com/rdkit/rdkit) Release_2019_03_4
 * [Python](https://www.python.org/) 3.6
