@@ -1,19 +1,72 @@
 # daverona/rdkit
 
+* GitLab source repository: [https://gitlab.com/toscana/docker/rdkit](https://gitlab.com/toscana/docker/rdkit)
+* Docker Hub repository: [https://hub.docker.com/r/daverona/rdkit](https://hub.docker.com/r/daverona/rdkit)
+
+This is a Docker image of RDKit. This image provides:
+
+* [RDKit](https://github.com/rdkit/rdkit) Release_2019_03_4
+* [Python](https://www.python.org/) 3.6
+
+You can use this image as *running environment* for RDKit
+as well as *building environment* for RDKit.
+
+## Installation
+
+Install [Docker](https://hub.docker.com/search/?type=edition&offering=community)
+if you don't have one. Then pull the image from Docker Hub repository:
 
 ```bash
-docker image build . --tag daverona/rdkit:2019.03.4-ubuntu18.04
+docker image pull daverona/rdkit:Release_2019_03_4-ubuntu18.04
 ```
+
+or build the image:
+
+```bash
+docker image build \
+  --tag daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
+  .
+```
+
+## Quick Start
+
+Run the container:
 
 ```bash
 docker container run --rm \
+  daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
+  python3 -c "import RDkit;print(RDKit.__version__)"
+```
+
+It will show the version of RDKit in the container.
+
+## Usage
+
+### Using Running Environment
+
+```bash
+docker container run --rm \
+  --interactive --tty \
+  --volume /host/path/to/your/src:/var/local \
+  davarona/rdkit:Release_2019_03_4-ubuntu18.04 \
+  python3
+```
+
+### Dumping RDKit Library
+
+#### Copying RDKit to Your Ubuntu
+```bash
+docker container run --rm \
   --volume $PWD:/data \
-  daverona/rdkit:2019.03.4-ubuntu:18.04 \
-  cp -R /usr/local/rdkit/Release_2019_03_4 /data/rdkit 
+  daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
+  cp -R /usr/local/rdkit/Release_2019_03_4 /data/rdkit
+```
+
+### Installing RDKit on Your Ubuntu
 
 export RDBASE=/path/to/your/rdkit
-  
-sudo cp -R rdkit ${RDBASE}  
+
+sudo cp -R rdkit ${RDBASE}
 
 sudo apt-get install --yes --quiet --no-install-recommends \
   libboost-iostreams1.65.1 \
@@ -35,3 +88,5 @@ sudo bash -c 'echo "export LD_LIBRARY_PATH" > /etc/profile.d/rdkit.sh'
 echo 'export LD_LIBRARY_PATH="'${RDBASE}'/lib:${LD_LIBRARY_PATH}"' \
   > /etc/profile.d/rdkit.sh
 ```
+
+### Testing RDKit on Your Ubuntu
