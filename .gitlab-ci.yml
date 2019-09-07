@@ -45,22 +45,22 @@ push tag:
     .
   - docker image push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
-release latest:
-  variables:
-    GIT_STRATEGY: none
-  stage: release
-  only:
-  - master
-  script:
-  - docker image pull $CI_REGISTRY_IMAGE:latest
-  - >
-    docker image tag $CI_REGISTRY_IMAGE:latest
-    $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:latest
-  - >
-    echo "${DOCKERHUB_PASSWORD}" |
-    docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
-  - docker image push $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:latest
-  - docker logout
+# release latest:
+#   variables:
+#     GIT_STRATEGY: none
+#   stage: release
+#   only:
+#   - master
+#   script:
+#   - docker image pull $CI_REGISTRY_IMAGE:latest
+#   - >
+#     docker image tag $CI_REGISTRY_IMAGE:latest
+#     $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:latest
+#   - >
+#     echo "${DOCKERHUB_PASSWORD}" |
+#     docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
+#   - docker image push $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:latest
+#   - docker logout
 
 release tag:
   variables:
