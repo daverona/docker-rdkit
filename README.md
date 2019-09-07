@@ -40,17 +40,17 @@ Run the container:
 ```bash
 docker container run --rm \
   daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
-  python3 -c "import RDkit;print(RDKit.__version__)"
+  python3 -c "import rdkit;print(rdkit.__version__)"
 ```
 
-It will show the version of RDKit in the container.
+It will show the version of RDKit built in the container.
 
-If you want a Python shell with RDKit available, run the container:
+If you want a Python 3 shell with RDKit available, run the container:
 
 ```bash
 docker container run --rm \
-  daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
-  python3
+  --interactive --tty \
+  daverona/rdkit:Release_2019_03_4-ubuntu18.04
 ```
 
 If you quit Python shell, you will exit the container.
@@ -76,10 +76,9 @@ source resides and you must change it properly. The command will give you
 a bash shell with your source available in the current directory.
 You can use this environment just like your local shell environment.
 
-Note that if your Python source write files to other than /var/local, say /srv,
+Note that if your Python source writes files to other than /var/local, say /srv,
 in this environment and exit the shell, these files will be lost. If this is the
-case, you should mount a directory on your machine to /srv in the container
-when run the container:
+case, you should mount a directory on your machine to /srv in the container:
 
 ```bash
 docker container run --rm \
@@ -90,7 +89,7 @@ docker container run --rm \
 ```
 
 You will get the files under /host/path/to/data on your machine as your source
-generates these files.
+generates these files in /srv.
 
 ### Using as Building Environment
 
@@ -122,35 +121,51 @@ docker container run --rm \
   cp -R /usr/local/rdkit /data/rdkit
 ```
 
-On the current directory on your Ubuntu, there will be three
+You have a copy of RDKit library under the current directory on your Ubuntu:
 
-
-
+```text
+rdkit/
+    Release_2019_03_4/
+        include/
+        lib/
+        share/
+```
 
 #### Installing on Local Ubuntu
 
-```
-export RDBASE=/path/to/your/rdkit
+Decide where to put the copy of RDKit library on your Ubuntu. Let's assume
+you want it under /usr/local/rdkit/Release_2019_03_4. Copy RDKit library and
+define environment variable `RDBASE`:
 
-sudo cp -R rdkit ${RDBASE}
+```bash
+sudo cp -R rdkit /usr/local/rdkit
+export RDBASE=/usr/local/rdkit/Release_2019_03_4
 ```
 
-```
+Make RDKit library available to your Python:
+
+```bash
 sudo ln -s ${RDBASE}/lib/python3.6/site-packages/rdkit \
   /usr/local/lib/python3.6/dist-packages/rdkit
 ```
 
-```sh
-sudo bash -c 'echo "export LD_LIBRARY_PATH" > /etc/profile.d/rdkit.sh'
-```
+Add RDKit library to system library search path:
 
-```sh
-echo 'export LD_LIBRARY_PATH="'${RDBASE}'/lib:${LD_LIBRARY_PATH}"' \
-  > /etc/profile.d/rdkit.sh
+```bash
+sudo bash -c "echo 'export LD_LIBRARY_PATH=\"${RDBASE}/lib\
+:\${LD_LIBRARY_PATH}\"' > /etc/profile.d/rdkit.sh"
 ```
-
 #### Testing on Local Ubuntu
 
-```sh
-python3 -c "import rdkit;rdkit.__version__"
+Run the following to see RDKit version:
+
+```bash
+. /etc/profile.d/rdkit.sh
+python3 -c "import rdkit;print(rdkit.__version__)"
 ```
+
+Once you see RDKit version, we are done.
+
+Until your Ubuntu system reboots, you (and users on your system who want to use
+RDKit) need to run `. /etc/profile.d/rdkit.sh` on new bash shell to have RDKit
+library. Once your system reboots, this hassle will be done.
