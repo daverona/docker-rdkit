@@ -8,8 +8,7 @@ This is a Docker image of RDKit. This image provides:
 * [RDKit](https://github.com/rdkit/rdkit) Release_2019_03_4
 * [Python](https://www.python.org/) 3.6
 
-You can use this image as *running environment* for RDKit
-as well as *building environment* for RDKit.
+You can use this image as *running environment* and/or *building environment* for RDKit.
 
 ## Installation
 
@@ -49,10 +48,26 @@ docker container run --rm \
   --interactive --tty \
   --volume /host/path/to/your/src:/var/local \
   davarona/rdkit:Release_2019_03_4-ubuntu18.04 \
-  python3
+  bash
 ```
 
+
+
+
 ### Installing on Local Ubuntu
+
+Ubuntu 18.04
+
+* libboost-iostreams1.65.1
+* libboost-python1.65.1
+* libboost-regex1.65.1
+* libboost-serialization1.65.1
+* libboost-system1.65.1
+* python3-cairo (version 1.16.2-1 or above)
+* python3-pandas (version 0.22.0-4 or above)
+* python3-pil (version 5.1.0-1 or above)
+* python3.6
+* python3.6-dev
 
 #### Copying from Docker Image
 
@@ -71,17 +86,6 @@ export RDBASE=/path/to/your/rdkit
 sudo cp -R rdkit ${RDBASE}
 ```
 
-* libboost-iostreams1.65.1
-* libboost-python1.65.1
-* libboost-regex1.65.1
-* libboost-serialization1.65.1
-* libboost-system1.65.1
-* python3-cairo (version 1.16.2-1 or above)
-* python3-pandas (version 0.22.0-4 or above)
-* python3-pil (version 5.1.0-1 or above)
-* python3.6
-* python3.6-dev
-
 ```
 sudo ln -s ${RDBASE}/lib/python3.6/site-packages/rdkit \
   /usr/local/lib/python3.6/dist-packages/rdkit
@@ -97,3 +101,7 @@ echo 'export LD_LIBRARY_PATH="'${RDBASE}'/lib:${LD_LIBRARY_PATH}"' \
 ```
 
 ### Testing on Local Ubuntu
+
+```sh
+python3 -c "import rdkit;rdkit.__version__"
+```
