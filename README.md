@@ -169,3 +169,8 @@ Once you see RDKit version, we are done.
 Until your Ubuntu system reboots, you (and users on your system who want to use
 RDKit) need to run `. /etc/profile.d/rdkit.sh` on new bash shell to have RDKit
 library. Once your system reboots, this hassle will be done.
+
+## References
+
+* [https://github.com/rdkit/rdkit](https://github.com/rdkit/rdkit)
+* [https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md](https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md)
