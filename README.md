@@ -41,7 +41,11 @@ It will show the version of RDKit in the container.
 
 ## Usage
 
-### Using Running Environment
+### Using as Running Environment
+
+This section explains how to use RDKit library in the container.
+You run the container with your Python source (not RDKit source itself but
+some source written in Python 3 using RDKit) mounted to the container:
 
 ```bash
 docker container run --rm \
@@ -52,11 +56,24 @@ docker container run --rm \
 ```
 
 In the above example directory /host/path/to/your/src is where your Python
-source resides and you must change it properly. You will get a bash shell
-with your source in the current directory. You probably want to execute Python
-to run your source.
+source resides and you must change it properly. The command will give you
+a shell with your source available in the current directory.
+You can use this environment just like your local environment.
 
-### Installing on Local System
+Note that if you write some files to other than /var/local and exit the shell,
+they will be lost. If your code write somewhere other than /var/local, say
+/tmp and you want to have them, you should mount
+
+```bash
+docker container run --rm \
+  ...
+  --volume /host/path/to/your/src:/var/local \
+  --volume /another/directory:/tmp
+  ...
+```
+
+
+### Using as Building Environment
 
 You can take out RDKit library from the image to install on your local system.
 Sure, that's possible but your local system should run Ubuntu 18.04 or above
