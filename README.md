@@ -51,12 +51,16 @@ docker container run --rm \
   bash
 ```
 
+In the above example directory /host/path/to/your/src is where your Python
+source resides and you must change it properly. You will get a bash shell
+with your source in the current directory. You probably want to execute Python
+to run your source.
 
+### Installing on Local System
 
-
-### Installing on Local Ubuntu
-
-Ubuntu 18.04
+You can take out RDKit library from the image to install on your local system.
+Sure, that's possible but your local system should run Ubuntu 18.04 or above
+(or similar Linux such as Debian) with the following packages installed:
 
 * libboost-iostreams1.65.1
 * libboost-python1.65.1
@@ -69,16 +73,25 @@ Ubuntu 18.04
 * python3.6
 * python3.6-dev
 
+Once these constraints are met, you can follow the steps described below.
+
 #### Copying from Docker Image
+
+Take out RDKit library from the image to the current directory:
 
 ```bash
 docker container run --rm \
   --volume $PWD:/data \
   daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
-  cp -R /usr/local/rdkit/Release_2019_03_4 /data/rdkit
+  cp -R /usr/local/rdkit /data/rdkit
 ```
 
-### Installing on Local Ubuntu
+On the current directory on your Ubuntu, there will be three
+
+
+
+
+#### Installing on Local Ubuntu
 
 ```
 export RDBASE=/path/to/your/rdkit
@@ -100,7 +113,7 @@ echo 'export LD_LIBRARY_PATH="'${RDBASE}'/lib:${LD_LIBRARY_PATH}"' \
   > /etc/profile.d/rdkit.sh
 ```
 
-### Testing on Local Ubuntu
+#### Testing on Local Ubuntu
 
 ```sh
 python3 -c "import rdkit;rdkit.__version__"
