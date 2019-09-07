@@ -38,7 +38,7 @@ RUN build_deps="\
     libeigen3-dev=3.3.4-4 \
     wget=1.19.4-1ubuntu2.2" \
   && apt-get update \
-  && apt-get install --yes --quiet --no-install-recommends $build_deps \
+  && apt-get install --yes --quiet $build_deps \
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
   && wget --quiet https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz \
   && rm -rf ~/.wget-hsts \
