@@ -23,9 +23,15 @@ or build the image:
 
 ```bash
 docker image build \
+  --build-arg RDKIT_VERSION=Release_2019_03_4 \
   --tag daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
   .
 ```
+
+When you build the image, you can specify RDKit version as shown above.
+If you don't specify the value of build argument `RDKIT_VERSION`,
+Release_2019_03_4 will be used. If you specify `RDKIT_VERSION`, don't forget
+to change the tag name.
 
 ## Quick Start
 
@@ -39,13 +45,21 @@ docker container run --rm \
 
 It will show the version of RDKit in the container.
 
+If you want a Python shell with RDKit available, run the container:
+
+```bash
+docker container run --rm \
+  daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
+  python3
+```
+
 ## Usage
 
 ### Using as Running Environment
 
 This section explains how to use RDKit library in the container.
-You run the container with your Python source (not RDKit source itself but
-some source written in Python 3 using RDKit) mounted to the container:
+You run the container with your Python source (not RDKit library source itself but
+some source written in Python 3 using RDKit library) mounted to the container:
 
 ```bash
 docker container run --rm \
@@ -57,21 +71,23 @@ docker container run --rm \
 
 In the above example directory /host/path/to/your/src is where your Python
 source resides and you must change it properly. The command will give you
-a shell with your source available in the current directory.
-You can use this environment just like your local environment.
+a bash shell with your source available in the current directory.
+You can use this environment just like your local shell environment.
 
-Note that if you write some files to other than /var/local and exit the shell,
-they will be lost. If your code write somewhere other than /var/local, say
-/tmp and you want to have them, you should mount
+Note that if your Python source write files to other than /var/local, say /srv,
+in this environment and exit the shell, these files will be lost. If this is the
+case, you should mount a directory on your machine to /srv in the container
+when run the container:
 
 ```bash
 docker container run --rm \
   ...
   --volume /host/path/to/your/src:/var/local \
-  --volume /another/directory:/tmp
+  --volume /another/directory:/srv
   ...
 ```
 
+You will get the files under /another/directory on your machine.
 
 ### Using as Building Environment
 
