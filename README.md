@@ -169,8 +169,8 @@ python3 -c "import rdkit;print(rdkit.__version__)"
 Once you see RDKit version, we are done.
 
 Until your Ubuntu system reboots, you (and users on your system who want to use
-RDKit) need to run `. /etc/profile.d/rdkit.sh` on new bash shell to have RDKit
-library. Once your system reboots, this hassle will be done.
+RDKit) need to run `. /etc/profile.d/rdkit.sh` whenever a new bash shell starts
+to use RDKit library. After your system reboots, this hassle will be done.
 
 ## References
 
