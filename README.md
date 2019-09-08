@@ -18,7 +18,7 @@ Install [Docker](https://hub.docker.com/search/?type=edition&offering=community)
 if you don't have one. Then pull the image from Docker Hub repository:
 
 ```bash
-docker image pull daverona/rdkit:Release_2019_03_4-ubuntu18.04
+docker image pull daverona/rdkit:Release_2019_03_4
 ```
 
 or build the image:
@@ -26,7 +26,7 @@ or build the image:
 ```bash
 docker image build \
   --build-arg RDKIT_VERSION=Release_2019_03_4 \
-  --tag daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
+  --tag daverona/rdkit:Release_2019_03_4 \
   .
 ```
 
@@ -41,7 +41,7 @@ Run the container:
 
 ```bash
 docker container run --rm \
-  daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
+  daverona/rdkit:Release_2019_03_4 \
   python3 -c "import rdkit;print(rdkit.__version__)"
 ```
 
@@ -52,7 +52,7 @@ If you want a Python 3 shell with RDKit available, run the container:
 ```bash
 docker container run --rm \
   --interactive --tty \
-  daverona/rdkit:Release_2019_03_4-ubuntu18.04
+  daverona/rdkit:Release_2019_03_4
 ```
 
 If you quit Python shell, you will exit the container.
@@ -69,7 +69,7 @@ container:
 docker container run --rm \
   --interactive --tty \
   --volume /host/path/to/your/src:/var/local \
-  davarona/rdkit:Release_2019_03_4-ubuntu18.04 \
+  davarona/rdkit:Release_2019_03_4 \
   bash
 ```
 
@@ -119,7 +119,7 @@ Take out RDKit library from the image to the current directory:
 ```bash
 docker container run --rm \
   --volume $PWD:/data \
-  daverona/rdkit:Release_2019_03_4-ubuntu18.04 \
+  daverona/rdkit:Release_2019_03_4 \
   cp -R /usr/local/rdkit /data/rdkit
 ```
 
