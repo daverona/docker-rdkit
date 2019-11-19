@@ -7,7 +7,7 @@
 
 This is a Docker image of RDKit (Open-Source Cheminformatics Software) library. This image provides:
 
-* [RDKit](https://github.com/rdkit/rdkit) Release_2019_03_4
+* [RDKit](https://github.com/rdkit/rdkit) Release_2019_09_1
 * [Python](https://www.python.org/) 3.6
 
 You can use this image as *running environment* and/or *building environment* for RDKit.
@@ -98,11 +98,13 @@ Sure, that's possible but your local system should run Ubuntu 18.04 or above
 * libboost-regex1.65.1
 * libboost-serialization1.65.1
 * libboost-system1.65.1
-* python3-cairo (version 1.16.2-1 or above)
-* python3-pandas (version 0.22.0-4 or above)
-* python3-pil (version 5.1.0-1 or above)
+* python3-cairo
+* python3-pandas
+* python3-pil
+* python3-pip
 * python3.6
 * python3.6-dev
+* pandas>=0.25.0 (Python package)
 
 Once these constraints are met, you can follow the steps described below.
 
@@ -121,7 +123,7 @@ You have a copy of RDKit library under the current directory on your Ubuntu:
 
 ```text
 rdkit/
-    Release_2019_03_4/
+    Release_2019_09_1/
         include/
         lib/
         share/
@@ -130,12 +132,12 @@ rdkit/
 #### Installing on Local Ubuntu
 
 Decide where to put the copy of RDKit library on your Ubuntu. Let's assume
-you want it under /usr/local/rdkit/Release_2019_03_4. Copy RDKit library and
+you want it under /usr/local/rdkit/Release_2019_09_1. Copy RDKit library and
 define environment variable `RDBASE`:
 
 ```bash
 sudo cp -R rdkit /usr/local/rdkit
-export RDBASE=/usr/local/rdkit/Release_2019_03_4
+export RDBASE=/usr/local/rdkit/Release_2019_09_1
 ```
 
 Make RDKit library available to your Python:
