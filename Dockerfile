@@ -24,7 +24,7 @@ RUN apt-get update \
 # Without this update, pandas version is 0.22.0 and it will fail with Test #167
 # with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
 RUN apt-get update \
-  && apt-get install --yes --quiet --no-install-reommends \
+  && apt-get install --yes --quiet --no-install-recommends \
     python3.6-pip \
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
   && pip3 install --no-cache-dir --upgrade "pandas>=0.25.0"
