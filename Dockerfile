@@ -13,12 +13,21 @@ RUN apt-get update \
     libboost-regex1.65.1 \
     libboost-serialization1.65.1 \
     libboost-system1.65.1 \
-    python3-cairo=1.16.2-1 \
-    python3-pandas=0.22.0-4 \
-    python3-pil=5.1.0-1 \
+    python3-cairo \
+    python3-pandas \
+    python3-pil \
     python3.6 \
     python3.6-dev \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Update Python pandas version to 0.25 or above
+# Without this update, pandas version is 0.22.0 and it will fail with Test #167
+# with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
+RUN apt-get update \
+  && apt-get install --yes --quiet --no-install-reommends \
+    python3.6-pip \
+  && apt-get clean && rm -rf /var/lib/apt/lists/* \
+  && pip3 install --no-cache-dir --upgrade "pandas>=0.25.0"
 
 # 1. Install packages required to build RDKit
 # 2. Download, decompress RDKit source and run cmake
@@ -26,17 +35,17 @@ RUN apt-get update \
 # 4. Remove packages installed to build RDKit
 # @see https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md#linux-and-os-x
 RUN build_deps="\
-    build-essential=12.4ubuntu1 \
-    cmake=3.10.2-1ubuntu2.18.04.1 \
+    build-essential \
+    cmake \
     libboost-iostreams1.65-dev \
     libboost-python1.65-dev \
     libboost-regex1.65-dev \
     libboost-serialization1.65-dev \
     libboost-system1.65-dev \
     libboost1.65-dev \
-    libcairo2-dev=1.15.10-2ubuntu0.1 \
-    libeigen3-dev=3.3.4-4 \
-    wget=1.19.4-1ubuntu2.2" \
+    libcairo2-dev \
+    libeigen3-dev \
+    wget" \
   && apt-get update \
   && apt-get install --yes --quiet $build_deps \
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
