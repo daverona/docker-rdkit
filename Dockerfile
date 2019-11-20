@@ -69,8 +69,6 @@ RUN build_deps="\
   && make && make install \
   && ln -s ${RDKIT_HOME}/lib/python3.6/site-packages/rdkit \
     /usr/local/lib/python3.6/dist-packages/rdkit \
-  && echo 'export LD_LIBRARY_PATH="'${RDKIT_HOME}'/lib:${LD_LIBRARY_PATH}"' \
-    > /etc/profile.d/rdkit.sh \
   && RDBASE=/rdkit LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
   && cd / && rm -rf /rdkit \
   && apt-get purge --yes --auto-remove $build_deps
@@ -78,9 +76,9 @@ RUN build_deps="\
 # Set up bash environment variables
 # The second echo is needed because "docker exec ... bash" gives a non-login shell.
 RUN echo 'export LD_LIBRARY_PATH="'${RDKIT_HOME}'/lib:${LD_LIBRARY_PATH}"' \
-    > /etc/profile.d/rdkit.sh
-  # && echo "[ -v \"LD_LIBRARY_PATH\" ] || `cat /etc/profile.d/rdkit.sh`" \
-  #   >> /etc/bash.bashrc
+    > /etc/profile.d/rdkit.sh \
+  && echo "[ -v \"LD_LIBRARY_PATH\" ] || `cat /etc/profile.d/rdkit.sh`" \
+    >> /etc/bash.bashrc
 
 # Configure entrypoint and working directory
 COPY ./docker-entrypoint.sh /
