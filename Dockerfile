@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-ARG RDKIT_VERSION=Release_2019_09_1
+ARG RDKIT_VERSION=Release_2019_09_2
 ARG RDKIT_HOME=/usr/local/rdkit/${RDKIT_VERSION}
 ARG DEBIAN_FRONTEND=noninteractive
 
