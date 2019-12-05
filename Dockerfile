@@ -60,7 +60,8 @@ RUN cd /rdkit/build \
     .. \
   && make && make install 
 #  && ln -s ${RDKIT_HOME}/lib/python3.7m/site-packages/rdkit \
-#    /usr/local/lib/python3.7m/dist-packages/rdkit \
+#    /usr/lib/python3.7/site-packages/rdkit \
+####    /usr/lib/python3.7/dist-packages/rdkit \
 #  && RDBASE=/rdkit LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
 #  && cd / && rm -rf /rdkit \
 #  && apk del build-deps
