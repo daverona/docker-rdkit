@@ -2,7 +2,6 @@ FROM alpine:3.10
 
 ARG RDKIT_VERSION=Release_2019_09_1
 ARG RDKIT_HOME=/usr/local/rdkit/${RDKIT_VERSION}
-ARG DEBIAN_FRONTEND=noninteractive
 
 # Install packages required in RDKit runtime environment
 # py3-pillow is required by ctest later on
@@ -19,14 +18,13 @@ RUN apk add --no-cache \
     python3-dev \
   && update-alternatives --install /usr/bin/python python /usr/bin/python3 10 \
   && update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 \
-  && pip install --no-cache-dir --upgrade pip setuptools
+  && pip install --no-cache-dir --upgrade pip setuptools wheel
 
 # Alpine does not have py3-pandas, which is required by ctest later on.
 # So we build one.  RDKit Release_Release_2019_09_1 requires
 # pandas 0.25 or above. Otherwise, it will fail in Test #167
 # with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
-RUN apk add --no-cache libstd++ \
-  && apk add --no-cache --virtual=build-deps g++ gfortran \
+RUN apk add --no-cache --virtual=build-deps g++ gfortran \
   && ln -s /usr/include/locale.h /usr/include/xlocale.h \
   && pip install --no-cache-dir "pandas>=0.25.0" \
   && rm /usr/include/xlocale.h \
@@ -37,29 +35,13 @@ RUN apk add --no-cache libstd++ \
 # 3. Build, install and test RDKit
 # 4. Remove packages installed to build RDKit
 # @see https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md#linux-and-os-x
-RUN build_deps="\
-    cmake \
+RUN apk add --no-cache --virtual=build-deps \
+    build-base \
     boost-dev \
     cairo-dev \
-    eigen-dev" \ 
-
-#    eigen \ ?
-#    py-cairo-dev \ ?
-#
-#    build-essential \
-#    libboost-iostreams1.65-dev \
-#    libboost-python1.65-dev \
-#    libboost-regex1.65-dev \
-#    libboost-serialization1.65-dev \
-#    libboost-system1.65-dev \
-#    libboost1.65-dev \
-#    libcairo2-dev \
-#    libeigen3-dev" \
-#  && apt-get update \
-#  && apt-get install --yes --quiet $build_deps \
-#  && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    cmake \
+    eigen-dev \
   && wget --quiet --no-cache https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz \
-#  && rm -rf ~/.wget-hsts \
   && tar -zxvf ${RDKIT_VERSION}.tar.gz \
   && mv rdkit-${RDKIT_VERSION} rdkit \
   && rm -rf ${RDKIT_VERSION}.tar.gz \
@@ -71,8 +53,8 @@ RUN cd /rdkit/build \
     -DRDK_BUILD_INCHI_SUPPORT=ON \
     -DRDK_INSTALL_INTREE=OFF \
     -DRDK_BUILD_CAIRO_SUPPORT=ON \
-    -DPYTHON_INCLUDE_DIR=/usr/include/python3.6/ \
-    -DPYTHON_EXECUTABLE=/usr/bin/python3.6 \
+    -DPYTHON_INCLUDE_DIR=/usr/include/python3.7m/ \
+    -DPYTHON_EXECUTABLE=/usr/bin/python3.7m \
     -DCMAKE_INSTALL_PREFIX=${RDKIT_HOME}/ \
     -DCMAKE_BUILD_TYPE=Release \
     .. \
