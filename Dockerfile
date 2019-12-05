@@ -45,10 +45,8 @@ RUN build_deps="\
   && apt-get update \
   && apt-get install --yes --quiet $build_deps \
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
-  && wget --quiet --no-hsts https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz \
-  && tar -zxvf ${RDKIT_VERSION}.tar.gz \
+  && wget --quiet --no-hsts --output-document=- https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz | tar -zxvf - \
   && mv rdkit-${RDKIT_VERSION} rdkit \
-  && rm -rf ${RDKIT_VERSION}.tar.gz \
   && mkdir -p /rdkit/build \
   && cd /rdkit/build \
   && cmake \
