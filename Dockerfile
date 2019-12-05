@@ -4,8 +4,11 @@ ARG RDKIT_VERSION=Release_2019_09_1
 ARG RDKIT_HOME=/usr/local/rdkit/${RDKIT_VERSION}
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Install packages required in RDKit runtime environment
-# python3-pandas and python3-pil are required by ctest later on
+# 1. Install packages required in RDKit runtime environment
+#    python3-pandas and python3-pil are required by ctest later on
+# 2. Update Python pandas version to 0.25 or above
+#    Without this update, pandas 0.22.0 is used and Test #167 will fail
+#    with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
 RUN apt-get update \
   && apt-get install --yes --quiet --no-install-recommends \
     libboost-iostreams1.65.1 \
@@ -18,13 +21,6 @@ RUN apt-get update \
     python3-pil \
     python3.6 \
     python3.6-dev \
-  && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Update Python pandas version to 0.25 or above
-# Without this update, pandas version is 0.22.0 and it will fail with Test #167
-# with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
-RUN apt-get update \
-  && apt-get install --yes --quiet --no-install-recommends \
     python3-pip \
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
   && pip3 install --no-cache-dir --upgrade "pandas>=0.25.0"
@@ -49,8 +45,7 @@ RUN build_deps="\
   && apt-get update \
   && apt-get install --yes --quiet $build_deps \
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
-  && wget --quiet https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz \
-  && rm -rf ~/.wget-hsts \
+  && wget --quiet --no-hsts https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz \
   && tar -zxvf ${RDKIT_VERSION}.tar.gz \
   && mv rdkit-${RDKIT_VERSION} rdkit \
   && rm -rf ${RDKIT_VERSION}.tar.gz \
