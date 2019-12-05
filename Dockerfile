@@ -59,12 +59,13 @@ RUN cd /rdkit/build \
     -DCMAKE_BUILD_TYPE=Release \
     .. \
   && make && make install 
-#  && ln -s ${RDKIT_HOME}/lib/python3.7m/site-packages/rdkit \
-#    /usr/lib/python3.7/site-packages/rdkit \
+
+RUN ln -s ${RDKIT_HOME}/lib/python3.7m/site-packages/rdkit \
+    /usr/lib/python3.7/site-packages/rdkit \
 ####    /usr/lib/python3.7/dist-packages/rdkit \
-#  && RDBASE=/rdkit LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
-#  && cd / && rm -rf /rdkit \
-#  && apk del build-deps
+  && RDBASE=/rdkit LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
+  && cd / && rm -rf /rdkit \
+  && apk del build-deps
 
 # Set up bash environment variables
 # The second echo is needed because "docker exec ... bash" gives a non-login shell.
