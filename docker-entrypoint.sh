@@ -1,6 +1,4 @@
 #!/bin/bash
 set -e
-
-. /etc/profile.d/rdkit.sh
-
+source /etc/profile.d/rdkit.sh
 exec "$@"
