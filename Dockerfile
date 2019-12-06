@@ -46,9 +46,8 @@ RUN build_deps="\
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
   && cd /tmp \
   && wget --quiet --no-hsts --output-document=- https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz | tar -zxvf - \
-  && mv rdkit-${RDKIT_VERSION} rdkit \
-  && mkdir -p /tmp/rdkit/build \
-  && cd /tmp/rdkit/build \
+  && mkdir -p /tmp/rdkit-${RDKIT_VERSION}/build \
+  && cd /tmp/rdkit-${RDKIT_VERSION}/build \
   && cmake \
     -Wno-dev \
     -DRDK_BUILD_INCHI_SUPPORT=ON \
@@ -61,7 +60,7 @@ RUN build_deps="\
     .. \
   && make && make install \
   && ln -s ${RDKIT_HOME}/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit \
-  && RDBASE=/tmp/rdkit LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
+  && RDBASE=/tmp/rdkit-${RDKIT_VERSION} LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
   && apt-get purge --yes --auto-remove $build_deps \
   && cd / && rm -rf /tmp/*
 
