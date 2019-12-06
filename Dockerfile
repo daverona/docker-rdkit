@@ -61,7 +61,7 @@ RUN build_deps="\
     .. \
   && make && make install \
   && ln -s ${RDKIT_HOME}/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit \
-  && RDBASE=/rdkit LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
+  && RDBASE=/tmp/rdkit LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
   && apt-get purge --yes --auto-remove $build_deps \
   && cd / && rm -rf /tmp/*
 
