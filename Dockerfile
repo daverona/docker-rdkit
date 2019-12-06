@@ -65,16 +65,10 @@ RUN build_deps="\
   && cd / && rm -rf /tmp/*
 
 # Set up bash environment variables
-# The second echo is needed because "docker exec ... bash" gives a non-login shell.
-#RUN echo "export LD_LIBRARY_PATH=\"${RDKIT_HOME}/lib\"" > /etc/profile.d/rdkit.sh \
-#  && echo "[ -v \"LD_LIBRARY_PATH\" ] || `cat /etc/profile.d/rdkit.sh`" >> /etc/bash.bashrc
-
-# Configure entrypoint and working directory
-#COPY ./docker-entrypoint.sh /
-#RUN chmod +x /docker-entrypoint.sh
 ENV LD_LIBRARY_PATH=${RDKIT_HOME}/lib
 ENV RDBASE=${RDKIT_HOME}
+
+# Configure entrypoint and working directory
 WORKDIR /var/local
 
-#ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/usr/bin/python3"]
