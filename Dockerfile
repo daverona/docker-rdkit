@@ -14,13 +14,10 @@ RUN apk add --no-cache \
     boost-regex \
     boost-serialization \
     boost-system \
-#    dpkg \
     py3-cairo \
     py3-pillow \
     python3 \
     python3-dev \
-#  && update-alternatives --install /usr/bin/python python /usr/bin/python3 10 \
-#  && update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 \
   && pip3 install --no-cache-dir --upgrade pip setuptools wheel \
   && apk add --no-cache --virtual=build-deps g++ gfortran \
   && ln -s /usr/include/locale.h /usr/include/xlocale.h \
@@ -41,11 +38,11 @@ RUN apk add --no-cache --virtual=build-deps \
     eigen-dev \
   && cd /tmp \
   && wget --quiet --output-document=- https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz | tar -zxvf - \
-  && mkdir -p /tmp/rdkit-${RDKIT_VERSION}/build \
+  && mkdir -p /tmp/rdkit-${RDKIT_VERSION}/build 
   && cd /tmp/rdkit-${RDKIT_VERSION}/build \
   && cmake \
     -Wno-dev \
-    -DRDK_BUILD_INCHI_SUPPORT=OFF \
+    -DRDK_BUILD_INCHI_SUPPORT=ON \
     -DRDK_INSTALL_INTREE=OFF \
     -DRDK_BUILD_CAIRO_SUPPORT=ON \
     -DPYTHON_INCLUDE_DIR=/usr/include/python3.7m/ \
@@ -53,16 +50,12 @@ RUN apk add --no-cache --virtual=build-deps \
     -DCMAKE_INSTALL_PREFIX=${RDKIT_HOME}/ \
     -DCMAKE_BUILD_TYPE=Release \
     .. \
+  && sed -i "s|__isascii|isascii|" /tmp/rdkit-${RDKIT_VERSION}/External/INCHI-API/src/INCHI_BASE/src/util.c \
   && make && make install \
   && ln -s ${RDKIT_HOME}/lib/python3.7/site-packages/rdkit /usr/lib/python3.7/site-packages/rdkit \
   && RDBASE=/tmp/rdkit-${RDKIT_VERSION} LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
   && apk del build-deps \
   && cd / && rm -rf /tmp/*
-
-#RUN cd /tmp/rdkit-${RDKIT_VERSION}/build \
-#  && RDBASE=/tmp/rdkit-${RDKIT_VERSION} LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
-#  && apk del build-deps \
-#  && cd / && rm -rf /tmp/*
 
 # Set up bash environment variables
 ENV LD_LIBRARY_PATH=${RDKIT_HOME}/lib
@@ -72,44 +65,3 @@ ENV RDBASE=${RDKIT_HOME}
 WORKDIR /var/local
 
 CMD ["/usr/bin/python3"]
-
-#    glib \
-#    glib-dev \
-
-#ENV LANG=C.UTF-8
-
-# Here we install GNU libc (aka glibc) and set C.UTF-8 locale as default.
-#RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
-#  && ALPINE_GLIBC_PACKAGE_VERSION="2.30-r0" \
-#  && ALPINE_GLIBC_BASE_PACKAGE_FILENAME="glibc-$ALPINE_GLIBC_PACKAGE_VERSION.apk" \
-#  && ALPINE_GLIBC_BIN_PACKAGE_FILENAME="glibc-bin-$ALPINE_GLIBC_PACKAGE_VERSION.apk" \
-#  && ALPINE_GLIBC_I18N_PACKAGE_FILENAME="glibc-i18n-$ALPINE_GLIBC_PACKAGE_VERSION.apk" \
-#  && apk add --no-cache --virtual=.build-deps ca-certificates \
-#  && echo -e "\
-#-----BEGIN PUBLIC KEY-----\n\
-#MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApZ2u1KJKUu/fW4A25y9m\n\
-#y70AGEa/J3Wi5ibNVGNn1gT1r0VfgeWd0pUybS4UmcHdiNzxJPgoWQhV2SSW1JYu\n\
-#tOqKZF5QSN6X937PTUpNBjUvLtTQ1ve1fp39uf/lEXPpFpOPL88LKnDBgbh7wkCp\n\
-#m2KzLVGChf83MS0ShL6G9EQIAUxLm99VpgRjwqTQ/KfzGtpke1wqws4au0Ab4qPY\n\
-#KXvMLSPLUp7cfulWvhmZSegr5AdhNw5KNizPqCJT8ZrGvgHypXyiFvvAH5YRtSsc\n\
-#Zvo9GI2e2MaZyo9/lvb+LbLEJZKEQckqRj4P26gmASrZEPStwc+yqy1ShHLA0j6m\n\
-#1QIDAQAB\n\
-#-----END PUBLIC KEY-----" > /etc/apk/keys/sgerrand.rsa.pub \
-#  && wget --quiet \
-#    "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
-#    "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
-#    "$ALPINE_GLIBC_BASE_URL/$ALPINE_GLIBC_PACKAGE_VERSION/$ALPINE_GLIBC_I18N_PACKAGE_FILENAME" \
-#  && apk add --no-cache \
-#    "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
-#    "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
-#    "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME" \
-#  && rm /etc/apk/keys/sgerrand.rsa.pub \
-#  && /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true \
-#  && echo "export LANG=$LANG" > /etc/profile.d/locale.sh \
-#  && apk del glibc-i18n \
-#  && apk del .build-deps \
-#  && rm -rf \
-#    "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
-#    "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
-#    "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
-
