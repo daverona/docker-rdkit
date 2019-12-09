@@ -38,7 +38,7 @@ RUN apk add --no-cache --virtual=build-deps \
     eigen-dev \
   && cd /tmp \
   && wget --quiet --output-document=- https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz | tar -zxvf - \
-  && mkdir -p /tmp/rdkit-${RDKIT_VERSION}/build 
+  && mkdir -p /tmp/rdkit-${RDKIT_VERSION}/build \
   && cd /tmp/rdkit-${RDKIT_VERSION}/build \
   && cmake \
     -Wno-dev \
