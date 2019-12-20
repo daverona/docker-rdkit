@@ -22,8 +22,9 @@ RUN apk add --no-cache \
   && apk add --no-cache --virtual=build-deps g++ gfortran \
   && ln -s /usr/include/locale.h /usr/include/xlocale.h \
   && pip3 install --no-cache-dir "pandas>=0.25.0" \
+  && rm -rf /root/.cache \
   && rm /usr/include/xlocale.h \
-  && apk del build-deps
+  && apk del --no-cache build-deps
 
 # 1. Install packages required to build RDKit
 # 2. Download, decompress RDKit source and run cmake
@@ -36,8 +37,7 @@ RUN apk add --no-cache --virtual=build-deps \
     cairo-dev \
     cmake \
     eigen-dev \
-  && cd /tmp \
-  && wget --quiet --output-document=- https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz | tar -zxvf - \
+  && wget --quiet --output-document=- https://github.com/rdkit/rdkit/archive/${RDKIT_VERSION}.tar.gz | tar -zxvf - -C /tmp \
   && mkdir -p /tmp/rdkit-${RDKIT_VERSION}/build \
   && cd /tmp/rdkit-${RDKIT_VERSION}/build \
   && cmake \
@@ -54,7 +54,7 @@ RUN apk add --no-cache --virtual=build-deps \
   && make && make install \
   && ln -s ${RDKIT_HOME}/lib/python3.7/site-packages/rdkit /usr/lib/python3.7/site-packages/rdkit \
   && RDBASE=/tmp/rdkit-${RDKIT_VERSION} LD_LIBRARY_PATH=${RDKIT_HOME}/lib ctest \
-  && apk del build-deps \
+  && apk del --no-cache build-deps \
   && cd / && rm -rf /tmp/*
 
 # Set up bash environment variables
