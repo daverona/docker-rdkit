@@ -1,13 +1,13 @@
 # daverona/rdkit
 
-[![pipeline status](https://gitlab.com/toscana/docker/rdkit/badges/master/pipeline.svg)](https://gitlab.com/toscana/docker/rdkit/commits/master)
+[![pipeline status](https://gitlab.com/daverona/docker/rdkit/badges/master/pipeline.svg)](https://gitlab.com/daverona/docker/rdkit/commits/master)
 
-* GitLab source repository: [https://gitlab.com/toscana/docker/rdkit](https://gitlab.com/toscana/docker/rdkit)
+* GitLab source repository: [https://gitlab.com/daverona/docker/rdkit](https://gitlab.com/daverona/docker/rdkit)
 * Docker Hub repository: [https://hub.docker.com/r/daverona/rdkit](https://hub.docker.com/r/daverona/rdkit)
 
 This is a Docker image of RDKit (Open-Source Cheminformatics Software) library. This image provides:
 
-* [RDKit](https://github.com/rdkit/rdkit) Release_2019_09_2
+* [RDKit](https://github.com/rdkit/rdkit) Release_2019_09_3
 * [Python](https://www.python.org/) 3.6
 
 You can use this image as *running environment* and/or *building environment* for RDKit.
@@ -123,7 +123,7 @@ You have a copy of RDKit library under the current directory on your Ubuntu:
 
 ```text
 rdkit/
-    Release_2019_09_2/
+    Release_2019_09_3/
         include/
         lib/
         share/
@@ -132,12 +132,12 @@ rdkit/
 #### Installing on Local Ubuntu
 
 Decide where to put the copy of RDKit library on your Ubuntu. Let's assume
-you want it under /usr/local/rdkit/Release_2019_09_2. Copy RDKit library and
+you want it under /usr/local/rdkit/Release_2019_09_3. Copy RDKit library and
 define environment variable `RDBASE`:
 
 ```bash
 sudo cp -R rdkit /usr/local/rdkit
-export RDBASE=/usr/local/rdkit/Release_2019_09_2
+export RDBASE=/usr/local/rdkit/Release_2019_09_3
 ```
 
 Make RDKit library available to your Python:
