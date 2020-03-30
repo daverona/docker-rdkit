@@ -1,6 +1,6 @@
 FROM alpine:3.10
 
-ARG RDKIT_VERSION=Release_2019_09_3
+ARG RDKIT_VERSION=Release_2020_03_1
 ARG RDKIT_HOME=/usr/local/rdkit/${RDKIT_VERSION}
 
 # 1. Install packages required in RDKit runtime environment
