@@ -25,14 +25,6 @@ Pull the image from Docker Hub repository:
 docker image pull daverona/rdkit
 ```
 
-or build the image:
-
-```bash
-docker image build \
-  --tag daverona/rdkit \
-  .
-```
-
 ## Quick Start
 
 Run the container:
