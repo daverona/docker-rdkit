@@ -5,17 +5,20 @@
 * GitLab source repository: [https://gitlab.com/daverona/docker/rdkit](https://gitlab.com/daverona/docker/rdkit)
 * Docker Hub repository: [https://hub.docker.com/r/daverona/rdkit](https://hub.docker.com/r/daverona/rdkit)
 
-This is a Docker image of RDKit (Open-Source Cheminformatics Software) library. This image provides:
+This is a repository for Docker images of RDKit (Open-Source Cheminformatics Software) library.
+Available versions are:
 
-* [RDKit](https://github.com/rdkit/rdkit) Release_2019_09_3
-* [Python](https://www.python.org/) 3.6
-
-You can use this image as *running environment* and/or *building environment* for RDKit.
+* [Release\_2020\_03\_1-alpine3.10](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2020_03_1-alpine3.10/Dockerfile), [Release\_2020\_03\_1](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2020_03_1/Dockerfile)
+* [Release\_2020\_03\_1-ubuntu18.04](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2020_03_1-ubuntu18.04/Dockerfile)
+* [Release\_2019\_09\_3-alpine3.10](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2019_09_3-alpine3.10/Dockerfile), [Release\_2019\_09\_3](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2019_09_3/Dockerfile)
+* [Release\_2019\_09\_3-ubuntu18.04](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2019_09_3-ubuntu18.04/Dockerfile)
+* [Release\_2019\_09\_2-alpine3.10](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2019_09_2-alpine3.10/Dockerfile), [Release\_2019\_09\_2](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2019_09_2/Dockerfile)
+* [Release\_2019\_09\_2-ubuntu18.04](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2019_09_2-ubuntu18.04/Dockerfile)
+* [Release\_2019\_09\_1-ubuntu18.04](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2019_09_1-ubuntu18.04/Dockerfile)
 
 ## Installation
 
-Install [Docker](https://hub.docker.com/search/?type=edition&offering=community)
-if you don't have one. Then pull the image from Docker Hub repository:
+Pull the image from Docker Hub repository:
 
 ```bash
 docker image pull daverona/rdkit
@@ -48,125 +51,6 @@ docker container run --rm \
   --interactive --tty \
   daverona/rdkit
 ```
-
-If you quit Python shell, you will exit the container.
-
-## Usage
-
-### Using as Running Environment
-
-You can run the container with your Python source (not RDKit library source
-itself but some source written in Python 3 using RDKit library) mounted to the
-container:
-
-```bash
-docker container run --rm \
-  --interactive --tty \
-  --volume /host/path/to/your/src:/var/local \
-  davarona/rdkit \
-  bash
-```
-
-In the above example directory /host/path/to/your/src is where your Python
-source resides and you must change it properly. The command will give you
-a bash shell with your source available in the current directory.
-You can use this environment just like your local shell environment.
-
-Note that if your Python source writes files to other than /var/local, say /srv,
-in this environment and exit the shell, these files will be lost. If this is the
-case, you should mount a directory on your machine to /srv in the container:
-
-```bash
-docker container run --rm \
-  ...
-  --volume /host/path/to/your/src:/var/local \
-  --volume /host/path/to/data:/srv \
-  ...
-```
-
-You will get the files under /host/path/to/data on your machine as your source
-generates these files in /srv.
-
-### Using as Building Environment
-
-You can take out RDKit library from the image to install on your local system.
-Sure, that's possible but your local system should run Ubuntu 18.04 or above
-(or similar Linux such as Debian) with the following packages installed:
-
-* libboost-iostreams1.65.1
-* libboost-python1.65.1
-* libboost-regex1.65.1
-* libboost-serialization1.65.1
-* libboost-system1.65.1
-* python3-cairo
-* python3-pandas
-* python3-pil
-* python3-pip
-* python3.6
-* python3.6-dev
-* pandas>=0.25.0 (Python package)
-
-Once these constraints are met, you can follow the steps described below.
-
-#### Copying from Docker Image
-
-Take out RDKit library from the image to the current directory:
-
-```bash
-docker container run --rm \
-  --volume $PWD:/data \
-  daverona/rdkit \
-  cp -R /usr/local/rdkit /data/rdkit
-```
-
-You have a copy of RDKit library under the current directory on your Ubuntu:
-
-```text
-rdkit/
-    Release_2019_09_3/
-        include/
-        lib/
-        share/
-```
-
-#### Installing on Local Ubuntu
-
-Decide where to put the copy of RDKit library on your Ubuntu. Let's assume
-you want it under /usr/local/rdkit/Release_2019_09_3. Copy RDKit library and
-define environment variable `RDBASE`:
-
-```bash
-sudo cp -R rdkit /usr/local/rdkit
-export RDBASE=/usr/local/rdkit/Release_2019_09_3
-```
-
-Make RDKit library available to your Python:
-
-```bash
-sudo ln -s ${RDBASE}/lib/python3.6/site-packages/rdkit \
-  /usr/local/lib/python3.6/dist-packages/rdkit
-```
-
-Add RDKit library to system library search path:
-
-```bash
-sudo bash -c "echo 'export LD_LIBRARY_PATH=\"${RDBASE}/lib\
-:\${LD_LIBRARY_PATH}\"' > /etc/profile.d/rdkit.sh"
-```
-#### Testing on Local Ubuntu
-
-Run the following to see RDKit version:
-
-```bash
-. /etc/profile.d/rdkit.sh
-python3 -c "import rdkit;print(rdkit.__version__)"
-```
-
-Once you see RDKit version, we are done.
-
-Until your Ubuntu system reboots, you (and users on your system who want to use
-RDKit) need to run `. /etc/profile.d/rdkit.sh` whenever a new bash shell starts
-to use RDKit library. After your system reboots, this hassle will be done.
 
 ## References
 
