@@ -1,7 +1,7 @@
 FROM alpine:3.10
 
 ARG RDKIT_VERSION=Release_2020_03_1
-ARG RDKIT_HOME=/usr/local
+ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
 # Install rdkit dependencies
 # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167 
@@ -54,8 +54,8 @@ RUN apk add --no-cache --virtual=build-deps \
   && make -j4 && make install \
   && ln -s $RDKIT_HOME/lib/python3.7/site-packages/rdkit /usr/lib/python3.7/site-packages/rdkit \
   && RDBASE=/tmp/rdkit-$RDKIT_VERSION LD_LIBRARY_PATH=$RDKIT_HOME/lib ctest \
-  && apk del --no-cache build-deps \
-  && cd / && rm -rf /tmp/*
+  && cd / && rm -rf /tmp/* \
+  && apk del --no-cache build-deps
 
 # Set environment variables
 ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
