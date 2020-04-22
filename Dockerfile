@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 ARG RDKIT_VERSION=Release_2020_03_1
-ARG RDKIT_HOME=/usr/local
+ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Install rdkit dependencies
@@ -39,8 +39,7 @@ RUN build_deps="\
     python3.6-dev \
     wget" \
   && apt-get update \
-  && apt-get install --yes --quiet $build_deps \
-  && apt-get clean && rm -rf /var/lib/apt/lists/* \
+  && apt-get install --yes --quiet --no-install-recommends $build_deps \
   && wget --quiet --no-hsts --output-document=- https://github.com/rdkit/rdkit/archive/$RDKIT_VERSION.tar.gz | tar -zxvf - -C /tmp \
   && mkdir -p /tmp/rdkit-$RDKIT_VERSION/build \
   && cd /tmp/rdkit-$RDKIT_VERSION/build \
@@ -53,11 +52,12 @@ RUN build_deps="\
     -DPYTHON_INCLUDE_DIR=/usr/include/python3.6 \
     -DCMAKE_INSTALL_PREFIX=$RDKIT_HOME \
     -DCMAKE_BUILD_TYPE=Release \
-  && make -j4 && make install \
-  && ln -s $RDKIT_HOME/lib/python3/dist-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit \
+  && make -j4 && make install 
+  && ln -s $RDKIT_HOME/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit \
   && RDBASE=/tmp/rdkit-$RDKIT_VERSION LD_LIBRARY_PATH=$RDKIT_HOME/lib ctest \
+  && cd / && rm -rf /tmp/* \
   && apt-get purge --yes --auto-remove $build_deps \
-  && cd / && rm -rf /tmp/*
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
 ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
