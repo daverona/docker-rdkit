@@ -4,9 +4,6 @@ ARG RDKIT_VERSION=Release_2020_03_1
 ARG RDKIT_HOME=/usr/local
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN sed -i "s|archive.ubuntu.com|mirror.kakao.com|" /etc/apt/sources.list \
-  && mkdir -p /root/.pip && echo "[global]\nindex-url=http://ftp.daumkakao.com/pypi/simple\ntrusted-host=ftp.daumkakao.com" >> /root/.pip/pip.conf
-
 # Install rdkit dependencies
 # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
 # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
