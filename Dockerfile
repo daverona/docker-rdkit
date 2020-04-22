@@ -52,7 +52,7 @@ RUN build_deps="\
     -DPYTHON_INCLUDE_DIR=/usr/include/python3.6 \
     -DCMAKE_INSTALL_PREFIX=$RDKIT_HOME \
     -DCMAKE_BUILD_TYPE=Release \
-  && make -j4 && make install 
+  && make -j4 && make install \
   && ln -s $RDKIT_HOME/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit \
   && RDBASE=/tmp/rdkit-$RDKIT_VERSION LD_LIBRARY_PATH=$RDKIT_HOME/lib ctest \
   && cd / && rm -rf /tmp/* \
