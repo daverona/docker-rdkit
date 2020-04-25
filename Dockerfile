@@ -22,7 +22,7 @@ RUN apt-get update \
     python3 \
     python3-pip \
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
-  && python3 -m pip install --no-cache-dir pip \
+  && python3 -m pip install --no-cache-dir --upgrade pip \
   && pip3 install --no-cache-dir "pandas>=0.25.0"
 
 # Install rdkit
