@@ -2,6 +2,7 @@ FROM ubuntu:18.04
 
 ARG RDKIT_VERSION=Release_2020_03_1
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Install rdkit dependencies
@@ -18,9 +19,10 @@ RUN apt-get update \
     python3-cairo \
     python3-numpy \
     python3-pil \
-    python3.6 \
+    python3 \
     python3-pip \
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
+  && python3 -m pip install --no-cache-dir pip \
   && pip3 install --no-cache-dir "pandas>=0.25.0"
 
 # Install rdkit
@@ -52,7 +54,7 @@ RUN build_deps="\
     -DPYTHON_INCLUDE_DIR=/usr/include/python3.6 \
     -DCMAKE_INSTALL_PREFIX=$RDKIT_HOME \
     -DCMAKE_BUILD_TYPE=Release \
-  && make -j4 && make install \
+  && make -j $(nproc) && make install \
   && ln -s $RDKIT_HOME/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit \
   && RDBASE=/tmp/rdkit-$RDKIT_VERSION LD_LIBRARY_PATH=$RDKIT_HOME/lib ctest \
   && cd / && rm -rf /tmp/* \
