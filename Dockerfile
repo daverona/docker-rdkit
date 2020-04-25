@@ -22,7 +22,7 @@ RUN apk add --no-cache \
     gfortran \
     python3-dev \
   && ln -s /usr/include/locale.h /usr/include/xlocale.h \
-  && pip3 install --no-cache-dir --upgrade pip \
+  && python3 -m pip install --no-cache-dir --upgrade pip \
   && pip3 install --no-cache-dir "pandas>=0.25.0" \
   && rm -rf /root/.cache \
   && rm /usr/include/xlocale.h \
@@ -51,7 +51,7 @@ RUN apk add --no-cache --virtual=build-deps \
     -DCMAKE_INSTALL_PREFIX=$RDKIT_HOME \
     -DCMAKE_BUILD_TYPE=Release \
   && sed -i "s|__isascii|isascii|" /tmp/rdkit-$RDKIT_VERSION/External/INCHI-API/src/INCHI_BASE/src/util.c \
-  && make -j4 && make install \
+  && make -j $(nproc) && make install \
   && ln -s $RDKIT_HOME/lib/python3.7/site-packages/rdkit /usr/lib/python3.7/site-packages/rdkit \
   && RDBASE=/tmp/rdkit-$RDKIT_VERSION LD_LIBRARY_PATH=$RDKIT_HOME/lib ctest \
   && cd / && rm -rf /tmp/* \
