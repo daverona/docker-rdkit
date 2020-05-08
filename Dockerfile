@@ -1,6 +1,6 @@
 FROM alpine:3.10
 
-ARG RDKIT_VERSION=Release_2020_03_1
+ARG RDKIT_VERSION=Release_2020_03_2
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
 # Install rdkit dependencies
