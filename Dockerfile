@@ -5,27 +5,7 @@ ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Install rdkit dependencies
-# Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
-# will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
-RUN apt-get update \
-  && apt-get install --yes --quiet --no-install-recommends \
-    libboost-iostreams1.65.1 \
-    libboost-python1.65.1 \
-    libboost-regex1.65.1 \
-    libboost-serialization1.65.1 \
-    libboost-system1.65.1 \
-    libpython3.6 \
-    python3-cairo \
-    python3-numpy \
-    python3-pil \
-    python3 \
-    python3-pip \
-  && apt-get clean && rm -rf /var/lib/apt/lists/* \
-  && python3 -m pip install --no-cache-dir --upgrade pip \
-  && pip3 install --no-cache-dir "pandas>=0.25.0"
-
-# Install rdkit
+# Install rdkit and its dependencies
 # @see https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md#linux-and-os-x
 RUN build_deps="\
     build-essential \
@@ -41,7 +21,23 @@ RUN build_deps="\
     python3.6-dev \
     wget" \
   && apt-get update \
-  && apt-get install --yes --quiet --no-install-recommends $build_deps \
+  && apt-get install --yes --quiet --no-install-recommends \
+    libboost-iostreams1.65.1 \
+    libboost-python1.65.1 \
+    libboost-regex1.65.1 \
+    libboost-serialization1.65.1 \
+    libboost-system1.65.1 \
+    libpython3.6 \
+    python3 \
+    python3-cairo \
+    python3-numpy \
+    python3-pil \
+    python3-pip \
+    $build_deps \
+  && python3 -m pip install --no-cache-dir --upgrade pip \
+  # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
+  # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
+  && pip3 install --no-cache-dir "pandas>=0.25.0" \
   && wget --quiet --no-hsts --output-document=- https://github.com/rdkit/rdkit/archive/$RDKIT_VERSION.tar.gz | tar -zxvf - -C /tmp \
   && mkdir -p /tmp/rdkit-$RDKIT_VERSION/build \
   && cd /tmp/rdkit-$RDKIT_VERSION/build \
@@ -63,7 +59,6 @@ RUN build_deps="\
 
 # Set environment variables
 ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
-ENV RDBASE=$RDKIT_HOME
 
 WORKDIR /var/local
 
