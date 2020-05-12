@@ -29,6 +29,7 @@ push master:
     docker build --pull
     --cache-from $CI_REGISTRY_IMAGE:master
     --tag $CI_REGISTRY_IMAGE:master
+    --cpus 8
     .
   - docker image push $CI_REGISTRY_IMAGE:master
 
@@ -42,6 +43,7 @@ push:
     docker build --pull
     --cache-from $CI_REGISTRY_IMAGE:master
     --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    --cpus 8
     .
   - docker image push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
