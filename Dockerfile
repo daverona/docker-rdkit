@@ -3,9 +3,8 @@ FROM alpine:3.10
 ARG RDKIT_VERSION=Release_2020_03_2
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
-# Install rdkit dependencies
-# Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167 
-# will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
+# Install rdkit and its dependencies
+# @see https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md#linux-and-os-x
 RUN apk add --no-cache \
     boost-iostreams \
     boost-python3 \
@@ -23,14 +22,13 @@ RUN apk add --no-cache \
     python3-dev \
   && ln -s /usr/include/locale.h /usr/include/xlocale.h \
   && python3 -m pip install --no-cache-dir --upgrade pip \
-  && pip3 install --no-cache-dir "pandas>=0.25.0" \
+  # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167 
+  # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
+  && pip install --no-cache-dir "pandas>=0.25.0" \
   && rm -rf /root/.cache \
   && rm /usr/include/xlocale.h \
-  && apk del --no-cache build-deps
-
-# Install rdkit
-# @see https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md#linux-and-os-x
-RUN apk add --no-cache --virtual=build-deps \
+  && apk del --no-cache build-deps \
+  && apk add --no-cache --virtual=build-deps \
     boost-dev \
     build-base \
     cairo-dev \
@@ -59,7 +57,6 @@ RUN apk add --no-cache --virtual=build-deps \
 
 # Set environment variables
 ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
-ENV RDBASE=$RDKIT_HOME
 
 WORKDIR /var/local
 
