@@ -14,9 +14,6 @@ stages:
 before_script:
   - docker version
   - echo "${CI_JOB_TOKEN}" | docker login --username gitlab-ci-token --password-stdin ${CI_REGISTRY}
-    #  - >
-    #    echo -n "${CI_JOB_TOKEN}" |
-    #    docker login --username gitlab-ci-token --password-stdin "${CI_REGISTRY}"
 after_script:
   - docker logout ${CI_REGISTRY}
 
@@ -56,12 +53,8 @@ release:
     - tags
   script:
     - docker image pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-    - >
-      docker image tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-      $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
-    - >
-      echo "${DOCKERHUB_PASSWORD}" |
-      docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
+    - docker image tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
+    - echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
     - docker image push $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
     - docker logout
 

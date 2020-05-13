@@ -52,3 +52,4 @@ docker container run --rm \
 
 * [https://github.com/rdkit/rdkit](https://github.com/rdkit/rdkit)
 * [https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md](https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md)
+
