@@ -20,15 +20,15 @@ after_script:
 build:
   stage: build
   only:
-    - master
+    - branches
     - tags
   script:
-    - docker image pull $CI_REGISTRY_IMAGE:master || true
+    - docker image pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME || true
     - echo $CI_COMMIT_REF_NAME
     - >
       docker image build 
       --pull
-      --cache-from $CI_REGISTRY_IMAGE:master
+      --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
       --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
       .
     - docker image push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
