@@ -1,4 +1,3 @@
-# external variables
 # DOCKERHUB_USERNAME  username
 # DOCKERHUB_PASSWORD  secret
 # DOCKERHUB_NAMESPACE namespace
@@ -23,15 +22,15 @@ build:
     - branches
     - tags
   script:
-    - docker image pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME || true
+    - docker image pull $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH || true
     - echo $CI_COMMIT_REF_NAME
-    - >
+    - > 
       docker image build 
       --pull
-      --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-      --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-      .
-    - docker image push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+      --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+      --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+      .   
+    - docker image push $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
 
 release:
   variables:
@@ -40,8 +39,8 @@ release:
   only:
     - tags
   script:
-    - docker image pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-    - docker image tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
+    - docker image pull $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH
+    - docker image tag $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
     - docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
     - docker image push $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
     - docker logout
@@ -54,7 +53,7 @@ publish:
     changes:
       - README.md
   script:
-    - >
+    - > 
       docker container run 
       --rm
       --volume $PWD/README.md:/var/local/README.md
