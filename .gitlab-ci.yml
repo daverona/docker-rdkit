@@ -67,7 +67,8 @@ release:
 publish:
   stage: publish
   only:
-    - master
+    refs:
+      - master
     changes:
       - README.md
   script:
