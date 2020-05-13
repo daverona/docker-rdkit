@@ -13,9 +13,10 @@ stages:
   - publish
 before_script:
   - docker version
-  - >
-    echo -n "${CI_JOB_TOKEN}" |
-    docker login --username gitlab-ci-token --password-stdin "${CI_REGISTRY}"
+  - docker login --username gitlab-ci-token --password ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    #  - >
+    #    echo -n "${CI_JOB_TOKEN}" |
+    #    docker login --username gitlab-ci-token --password-stdin "${CI_REGISTRY}"
 after_script:
   - docker logout ${CI_REGISTRY}
 
@@ -31,7 +32,7 @@ build branch:
       --cache-from $CI_REGISTRY_IMAGE:master
       --tag $CI_REGISTRY_IMAGE:master
       .
-    - docker image push $CI_REGISTRY_IMAGE:master
+    - docker image push $CI_REGISTRY_IMAGE:latest
 
 build tag:
   stage: build
