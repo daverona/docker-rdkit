@@ -23,6 +23,7 @@ build branch:
     - master
   script:
     - docker image pull $CI_REGISTRY_IMAGE:master || true
+    - echo $CI_COMMIT_REF_NAME
     - >
       docker image build 
       --pull
