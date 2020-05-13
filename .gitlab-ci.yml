@@ -19,7 +19,7 @@ before_script:
 after_script:
   - docker logout ${CI_REGISTRY}
 
-push master:
+build branch:
   stage: build
   only:
     - master
@@ -33,7 +33,7 @@ push master:
       .
     - docker image push $CI_REGISTRY_IMAGE:master
 
-push:
+build tag:
   stage: build
   only:
     - tags
@@ -68,6 +68,8 @@ publish:
   stage: publish
   only:
     - master
+    changes:
+      - README.md
   script:
     - >
       docker container run 
