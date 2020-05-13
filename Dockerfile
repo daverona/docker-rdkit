@@ -7,20 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Install rdkit and its dependencies
 # @see https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md#linux-and-os-x
-RUN build_deps="\
-    build-essential \
-    cmake \
-    libboost-iostreams1.65-dev \
-    libboost-python1.65-dev \
-    libboost-regex1.65-dev \
-    libboost-serialization1.65-dev \
-    libboost-system1.65-dev \
-    libboost1.65-dev \
-    libcairo2-dev \
-    libeigen3-dev \
-    python3.6-dev \
-    wget" \
-  && apt-get update \
+RUN apt-get update \
   && apt-get install --yes --quiet --no-install-recommends \
     libboost-iostreams1.65.1 \
     libboost-python1.65.1 \
@@ -33,11 +20,24 @@ RUN build_deps="\
     python3-numpy \
     python3-pil \
     python3-pip \
-    $build_deps \
+  && build_deps="\
+    build-essential \
+    cmake \
+    libboost-iostreams1.65-dev \
+    libboost-python1.65-dev \
+    libboost-regex1.65-dev \
+    libboost-serialization1.65-dev \
+    libboost-system1.65-dev \
+    libboost1.65-dev \
+    libcairo2-dev \
+    libeigen3-dev \
+    python3.6-dev \
+    wget" \
+  && apt-get install --yes --quiet $build_deps \
   && python3 -m pip install --no-cache-dir --upgrade pip \
   # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
   # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
-  && pip3 install --no-cache-dir "pandas>=0.25.0" \
+  && pip install --no-cache-dir "pandas>=0.25.0" \
   && wget --quiet --no-hsts --output-document=- https://github.com/rdkit/rdkit/archive/$RDKIT_VERSION.tar.gz | tar -zxvf - -C /tmp \
   && mkdir -p /tmp/rdkit-$RDKIT_VERSION/build \
   && cd /tmp/rdkit-$RDKIT_VERSION/build \
