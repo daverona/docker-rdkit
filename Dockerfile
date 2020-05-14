@@ -1,8 +1,5 @@
 FROM ubuntu:18.04
 
-ARG RDKIT_VERSION=Release_2020_03_2
-ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
-
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Install rdkit dependencies
@@ -24,6 +21,9 @@ RUN apt-get update \
   # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
   # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
   && pip install --no-cache-dir "pandas>=0.25.0"
+
+ARG RDKIT_VERSION=Release_2020_03_2
+ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
 # Install rdkit
 # @see https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md#linux-and-os-x
