@@ -5,8 +5,7 @@ ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Install rdkit and its dependencies
-# @see https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md#linux-and-os-x
+# Install rdkit dependencies
 RUN apt-get update \
   && apt-get install --yes --quiet --no-install-recommends \
     libboost-iostreams1.65.1 \
@@ -20,7 +19,15 @@ RUN apt-get update \
     python3-numpy \
     python3-pil \
     python3-pip \
-  && build_deps="\
+  && apt-get clean && rm -rf /var/lib/apt/lists/* \
+  && python3 -m pip install --no-cache-dir --upgrade pip \
+  # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
+  # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
+  && pip install --no-cache-dir "pandas>=0.25.0"
+
+# Install rdkit
+# @see https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md#linux-and-os-x
+RUN build_deps="\
     build-essential \
     cmake \
     libboost-iostreams1.65-dev \
@@ -33,11 +40,8 @@ RUN apt-get update \
     libeigen3-dev \
     python3.6-dev \
     wget" \
+  && apt-get update \
   && apt-get install --yes --quiet $build_deps \
-  && python3 -m pip install --no-cache-dir --upgrade pip \
-  # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
-  # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
-  && pip install --no-cache-dir "pandas>=0.25.0" \
   && wget --quiet --no-hsts --output-document=- https://github.com/rdkit/rdkit/archive/$RDKIT_VERSION.tar.gz | tar -zxvf - -C /tmp \
   && mkdir -p /tmp/rdkit-$RDKIT_VERSION/build \
   && cd /tmp/rdkit-$RDKIT_VERSION/build \
