@@ -23,7 +23,7 @@ RUN apk add --no-cache \
   && pip install --no-cache-dir "pandas>=0.25.0" \
   && rm -rf /root/.cache \
   && rm /usr/include/xlocale.h \
-  && apk del --no-cache build-deps \
+  && apk del --no-cache build-deps
 
 ARG RDKIT_VERSION=Release_2020_03_2
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
