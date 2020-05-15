@@ -25,7 +25,7 @@ RUN apk add --no-cache \
   && rm /usr/include/xlocale.h \
   && apk del --no-cache build-deps
 
-ARG RDKIT_VERSION=Release_2019_09_1
+ARG RDKIT_VERSION=Release_2019_03_4
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
 # Install rdkit dependencies
