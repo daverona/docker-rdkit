@@ -50,7 +50,7 @@ docker container run --rm \
 
 ## Copy
 
-To use RDKit built by this image without making the image as your base image, follow the next steps.
+To use RDKit built in this image without making the image as your base image, follow the next steps.
 
 Place the following to your `Dockerfile` *before* base image `FROM` command and
 set `RDKIT_VERSION` properly:
