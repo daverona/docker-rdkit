@@ -54,19 +54,15 @@ To copy RDKit in this image, *prepend* the following to your `Dockerfile`,
 set `RDKIT_VERSION` properly:
 
 ```dockerfile
-# Prepend to your Dockerfile
-
 ARG RDKIT_VERSION=Release_2020_03_2
 FROM daverona/rdkit:$RDKIT_VERSION as rdkit-library
 
-# your FROM command appears below this line
+# Your FROM command appears below this line
 ```
 
 and *append* the following to your `Dockerfile` and build:
 
 ```bash
-# Append to your Dockerfile
-
 # Your FROM command appears above this line
 
 ARG RDKIT_VERSION
