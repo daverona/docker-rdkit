@@ -69,7 +69,6 @@ Place the following *after* your base image `FROM` command and build:
 
 ARG RDKIT_VERSION
 ARG RDKIT_HOME=/usr/local/bin/rdkit/$RDKIT_VERSION
-ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 COPY --from=rdkit-library:$RDKIT_HOME $RDKIT_HOME
 RUN apt-get update \
   && apt-get install --yes --quiet --no-install-recommends \
@@ -88,6 +87,7 @@ RUN apt-get update \
   && python3 -m pip install --no-cache-dir --upgrade pip \
   && pip install --no-cache-dir "pandas>=0.25.0" \
   && ln -s $RDKIT_HOME/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit
+ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 ```
 
 ## References
