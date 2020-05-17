@@ -54,19 +54,19 @@ docker container run --rm \
   daverona/rdkit
 ```
 
-## Copying from Image
+## Copy
 
-To copy RDKit in this image, add the following in your `Dockerfile`,
-change `RDKIT_VERSION` value in the first line  and build:
+To copy RDKit in this image, add the following to `Dockerfile`,
+change `RDKIT_VERSION` value in the first line properly and build:
 
 ```dockerfile
-ARG RDKIT_VERSION=Release_03_2
-FROM daverona/rdkit:$RDKIT_VERSION as rdkit-source
+ARG RDKIT_VERSION=Release_2020_03_2
+FROM daverona/rdkit:$RDKIT_VERSION as rdkit-library
 
 # Copy RDKit
 ARG RDKIT_VERSION
 ARG RDKIT_HOME=/usr/local/bin/rdkit/$RDKIT_VERSION
-COPY --from=rdkit-source:$RDKIT_HOME $RDKIT_HOME
+COPY --from=rdkit-library:$RDKIT_HOME $RDKIT_HOME
 
 # Install rdkit dependencies
 RUN apt-get update \
@@ -84,8 +84,6 @@ RUN apt-get update \
     python3-pip \
   && apt-get clean && rm -rf /var/lib/apt/lists/* \
   && python3 -m pip install --no-cache-dir --upgrade pip \
-  # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
-  # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
   && pip install --no-cache-dir "pandas>=0.25.0" \
   && ln -s $RDKIT_HOME/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit
 
