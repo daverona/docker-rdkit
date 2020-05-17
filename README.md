@@ -2,7 +2,7 @@
 
 [![pipeline status](https://gitlab.com/daverona/docker/rdkit/badges/master/pipeline.svg)](https://gitlab.com/daverona/docker/rdkit/commits/master)
 
-This is a repository for Docker images of RDKit (Open-Source Cheminformatics Software) library.
+This is a repository for Docker images of [RDKit](https://github.com/rdkit/rdkit) (Open-Source Cheminformatics Software) library.
 
 * GitLab source repository: [https://gitlab.com/daverona/docker/rdkit](https://gitlab.com/daverona/docker/rdkit)
 * Docker Hub repository: [https://hub.docker.com/r/daverona/rdkit](https://hub.docker.com/r/daverona/rdkit)
@@ -54,8 +54,41 @@ docker container run --rm \
   daverona/rdkit
 ```
 
+## Copying
+
+To copy RDKit in this image, add the following in your `Dockerfile`,
+change the value of `RDKIT_VERSION` and build:
+:
+
+```
+ARG RDKIT_VERSION=Release_03_2
+
+# Install rdkit dependencies
+RUN apt-get update \
+  && apt-get install --yes --quiet --no-install-recommends \
+    libboost-iostreams1.65.1 \
+    libboost-python1.65.1 \
+    libboost-regex1.65.1 \
+    libboost-serialization1.65.1 \
+    libboost-system1.65.1 \
+    libpython3.6 \
+    python3 \
+    python3-cairo \
+    python3-numpy \
+    python3-pil \
+    python3-pip \
+  && apt-get clean && rm -rf /var/lib/apt/lists/* \
+  && python3 -m pip install --no-cache-dir --upgrade pip \
+  # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
+  # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
+  && pip install --no-cache-dir "pandas>=0.25.0" \
+  && ln -s $RDKIT_HOME/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit
+
+# Set environment variables
+ENV LD_LIBRARY_PATH=/usr/local/rdkit/$RDKIT_VERSION/lib:$LD_LIBRARY_PATH
+```
+
 ## References
 
-* [https://github.com/rdkit/rdkit](https://github.com/rdkit/rdkit)
-* [https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md](https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md)
-
+* RDKit source repository: [https://github.com/rdkit/rdkit](https://github.com/rdkit/rdkit)
+* RDKit documentation: [https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md](https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md)
