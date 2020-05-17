@@ -64,7 +64,7 @@ FROM daverona/rdkit:$RDKIT_VERSION as rdkit-library
 
 Place the following *after* your base image `FROM` command and build:
 
-```bash
+```dockerfile
 # Place the following after FROM command of your base image
 
 ARG RDKIT_VERSION
