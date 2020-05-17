@@ -54,14 +54,19 @@ docker container run --rm \
   daverona/rdkit
 ```
 
-## Copying
+## Copying from Image
 
 To copy RDKit in this image, add the following in your `Dockerfile`,
-change the value of `RDKIT_VERSION` and build:
-:
+change `RDKIT_VERSION` value in the first line  and build:
 
-```
+```dockerfile
 ARG RDKIT_VERSION=Release_03_2
+FROM daverona/rdkit:$RDKIT_VERSION as rdkit-source
+
+# Copy RDKit
+ARG RDKIT_VERSION
+ARG RDKIT_HOME=/usr/local/bin/rdkit/$RDKIT_VERSION
+COPY --from=rdkit-source:$RDKIT_HOME $RDKIT_HOME
 
 # Install rdkit dependencies
 RUN apt-get update \
@@ -85,7 +90,7 @@ RUN apt-get update \
   && ln -s $RDKIT_HOME/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit
 
 # Set environment variables
-ENV LD_LIBRARY_PATH=/usr/local/rdkit/$RDKIT_VERSION/lib:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 ```
 
 ## References
