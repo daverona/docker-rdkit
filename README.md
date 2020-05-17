@@ -50,22 +50,22 @@ docker container run --rm \
 
 ## Copy
 
-To use this image without making it as base image, follow the next steps.
+To use RDKit built by this image without making the image as your base image, follow the next steps.
 
-Place the following to your `Dockerfile` *before* base image `FROM` command,
+Place the following to your `Dockerfile` *before* base image `FROM` command and
 set `RDKIT_VERSION` properly:
 
 ```dockerfile
+# Place the following before FROM command of your base image
+
 ARG RDKIT_VERSION=Release_2020_03_2
 FROM daverona/rdkit:$RDKIT_VERSION as rdkit-library
-
-# Your FROM command appears below this line
 ```
 
-and place the following *after* your base image `FROM` command and build:
+Place the following *after* your base image `FROM` command and build:
 
 ```bash
-# Your FROM command appears above this line
+# Place the following after FROM command of your base image
 
 ARG RDKIT_VERSION
 ARG RDKIT_HOME=/usr/local/bin/rdkit/$RDKIT_VERSION
