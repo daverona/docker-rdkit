@@ -51,13 +51,15 @@ docker container run --rm \
 ## Copy
 
 To copy RDKit in this image, *prepend* the following to your `Dockerfile`,
-change `RDKIT_VERSION` value in the first line properly:
+set `RDKIT_VERSION` properly:
 
 ```dockerfile
 # Prepend to your Dockerfile
 
 ARG RDKIT_VERSION=Release_2020_03_2
 FROM daverona/rdkit:$RDKIT_VERSION as rdkit-library
+
+# your FROM command appears below this line
 ```
 
 and *append* the following to your `Dockerfile` and build:
@@ -65,11 +67,12 @@ and *append* the following to your `Dockerfile` and build:
 ```bash
 # Append to your Dockerfile
 
+# Your FROM command appears above this line
+
 ARG RDKIT_VERSION
 ARG RDKIT_HOME=/usr/local/bin/rdkit/$RDKIT_VERSION
 ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 COPY --from=rdkit-library:$RDKIT_HOME $RDKIT_HOME
-
 RUN apt-get update \
   && apt-get install --yes --quiet --no-install-recommends \
     libboost-iostreams1.65.1 \
