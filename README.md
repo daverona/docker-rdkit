@@ -50,6 +50,9 @@ docker container run --rm \
 
 ## Copy
 
+If you cannot use this image as your base image and still want to use it,
+you can copy RDKit in this image as follows.
+
 To copy RDKit in this image, *prepend* the following to your `Dockerfile`,
 set `RDKIT_VERSION` properly:
 
