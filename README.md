@@ -50,19 +50,26 @@ docker container run --rm \
 
 ## Copy
 
-To copy RDKit in this image, add the following to `Dockerfile`,
-change `RDKIT_VERSION` value in the first line properly and build:
+To copy RDKit in this image, *prepend* the following to your `Dockerfile`,
+change `RDKIT_VERSION` value in the first line properly:
 
 ```dockerfile
+# Prepend to your Dockerfile
+
 ARG RDKIT_VERSION=Release_2020_03_2
 FROM daverona/rdkit:$RDKIT_VERSION as rdkit-library
+```
 
-# Copy RDKit
+and *append* the following to your `Dockerfile` and build:
+
+```bash
+# Append to your Dockerfile
+
 ARG RDKIT_VERSION
 ARG RDKIT_HOME=/usr/local/bin/rdkit/$RDKIT_VERSION
+ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 COPY --from=rdkit-library:$RDKIT_HOME $RDKIT_HOME
 
-# Install rdkit dependencies
 RUN apt-get update \
   && apt-get install --yes --quiet --no-install-recommends \
     libboost-iostreams1.65.1 \
@@ -80,9 +87,6 @@ RUN apt-get update \
   && python3 -m pip install --no-cache-dir --upgrade pip \
   && pip install --no-cache-dir "pandas>=0.25.0" \
   && ln -s $RDKIT_HOME/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit
-
-# Set environment variables
-ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 ```
 
 ## References
