@@ -68,8 +68,8 @@ Place the following *after* your base image `FROM` command and build:
 # Place the following after FROM command of your base image
 
 ARG RDKIT_VERSION
-ARG RDKIT_HOME=/usr/local/bin/rdkit/$RDKIT_VERSION
-COPY --from=rdkit-library:$RDKIT_HOME $RDKIT_HOME
+ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
+COPY --from=rdkit-library $RDKIT_HOME $RDKIT_HOME
 RUN apt-get update \
   && apt-get install --yes --quiet --no-install-recommends \
     libboost-iostreams1.65.1 \
