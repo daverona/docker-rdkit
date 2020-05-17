@@ -93,4 +93,4 @@ ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 ## References
 
 * RDKit source repository: [https://github.com/rdkit/rdkit](https://github.com/rdkit/rdkit)
-* RDKit documentation: [https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md](https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md)
+* RDKit documentation: [https://www.rdkit.org/docs/Install.html](https://www.rdkit.org/docs/Install.html)
