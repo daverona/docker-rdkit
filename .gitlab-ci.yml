@@ -53,13 +53,13 @@ release:
     - docker image pull $CI_REGISTRY_IMAGE:master
     - docker image tag $CI_REGISTRY_IMAGE:master $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
     - docker image push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker logout $CI_REGISTRY
     - docker image tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
     - docker image tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:latest
     - docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
     - docker image push $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
     - docker image push $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:latest
     - docker logout
-    - docker logout $CI_REGISTRY
 
 publish:
   stage: publish
