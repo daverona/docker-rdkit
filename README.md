@@ -53,28 +53,25 @@ docker container run --rm \
   daverona/rdkit
 ```
 
-## Copy
+## Advanced Usages 
 
-To use RDKit built in this image without making the image as your base image, follow the next steps.
+### Copy to Another Docker Image
 
-Place the following to your `Dockerfile` *before* base image `FROM` command and
-set `RDKIT_VERSION` properly:
+To copy RDKit from this image to yours *not as* base image, follow the next steps.
+
+Place the following to your `Dockerfile` *before* the last `FROM` command:
 
 ```dockerfile
-# Place the following before FROM command of your base image
-
 ARG RDKIT_VERSION=2020_03_3
-FROM daverona/rdkit:$RDKIT_VERSION as rdkit-library
+FROM daverona/rdkit:$RDKIT_VERSION as rdkit-builder
 ```
 
-Place the following *after* your base image `FROM` command and build:
+Place the following *after* the last `FROM` command:
 
 ```dockerfile
-# Place the following after FROM command of your base image
-
 ARG RDKIT_VERSION
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
-COPY --from=rdkit-library $RDKIT_HOME $RDKIT_HOME
+COPY --from=rdkit-builder $RDKIT_HOME $RDKIT_HOME
 RUN apt-get update \
   && apt-get install --yes --quiet --no-install-recommends \
     libboost-iostreams1.65.1 \
@@ -94,6 +91,8 @@ RUN apt-get update \
   && ln -s $RDKIT_HOME/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit
 ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 ```
+
+Then build yours.
 
 ## References
 
