@@ -31,8 +31,6 @@ build:
       --tag $CI_REGISTRY_IMAGE:alpine
       .   
     - docker image push $CI_REGISTRY_IMAGE:alpine
-    - docker image tag $CI_REGISTRY_IMAGE:alpine $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-    - docker image push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
     - docker logout $CI_REGISTRY
 
 release:
@@ -51,12 +49,14 @@ release:
     GIT_STRATEGY: none
   script:
     - docker login --username gitlab-ci-token --password $CI_JOB_TOKEN $CI_REGISTRY
-    - docker image pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker image pull $CI_REGISTRY_IMAGE:alpine
+    - docker image tag $CI_REGISTRY_IMAGE:alpine $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker image push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker logout $CI_REGISTRY
     - docker image tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
     - docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
     - docker image push $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
     - docker logout
-    - docker logout $CI_REGISTRY
 
 silly:
   stage: silly
