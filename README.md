@@ -1,4 +1,4 @@
-# daverona/rdkit
+# daverona/rdkit <!-- alpine rdkit docker rdkit alpine -->
 
 [`ubuntu`](https://gitlab.com/daverona/docker/rdkit)
 [![pipeline status](https://gitlab.com/daverona/docker/rdkit/badges/master/pipeline.svg)](https://gitlab.com/daverona/docker/rdkit/commits/master)
@@ -52,6 +52,54 @@ docker container run --rm \
   --interactive --tty \
   daverona/rdkit
 ```
+
+## Advanced Usages
+
+### Copy to Another Docker Image
+
+To copy RDKit from this image to yours *not as* base image, follow the next steps.
+
+Place the following to your `Dockerfile` *before* the last `FROM` command:
+
+```dockerfile
+ARG RDKIT_VERSION=2020_03_3
+FROM daverona/rdkit:$RDKIT_VERSION-alpine3.10 as rdkit-builder
+```
+
+Place the following *after* the last `FROM` command:
+
+```dockerfile
+ARG RDKIT_VERSION
+ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
+COPY --from=rdkit-builder $RDKIT_HOME $RDKIT_HOME
+RUN apk add --no-cache \
+    boost-iostreams \
+    boost-python3 \
+    boost-regex \
+    boost-serialization \
+    boost-system \
+    eigen \
+    py3-cairo \
+    py3-numpy \
+    py3-pillow \
+    python3 \
+  && apk add --no-cache --virtual=build-deps \
+    g++ \
+    gfortran \
+    python3-dev \
+  && ln -s /usr/include/locale.h /usr/include/xlocale.h \
+  && python3 -m pip install --no-cache-dir --upgrade pip \
+  # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
+  # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
+  && pip install --no-cache-dir "pandas>=0.25.0" \
+  && rm -rf /root/.cache \
+  && rm /usr/include/xlocale.h \
+  && apk del --no-cache build-deps \
+  && ln -s $RDKIT_HOME/lib/python3.7/site-packages/rdkit /usr/lib/python3.7/site-packages/rdkit
+ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
+```
+
+Then build yours.
 
 ## References
 
