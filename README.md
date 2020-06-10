@@ -8,7 +8,7 @@
 
 This is a repository for Docker images of [RDKit](https://github.com/rdkit/rdkit) (Open-Source Cheminformatics Software) library.
 
-* GitLab source repository: [https://gitlab.com/daverona/docker/rdkit](https://gitlab.com/daverona/docker/rdkit/-/tree/alpine)
+* GitLab source repository: [https://gitlab.com/daverona/docker/rdkit/-/tree/alpine](https://gitlab.com/daverona/docker/rdkit/-/tree/alpine)
 * Docker Hub repository: [https://hub.docker.com/r/daverona/rdkit](https://hub.docker.com/r/daverona/rdkit)
 
 Available versions are:
