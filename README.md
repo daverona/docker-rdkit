@@ -83,14 +83,13 @@ RUN apk add --no-cache \
     py3-numpy \
     py3-pillow \
     python3 \
+  && python3 -m pip install --no-cache-dir --upgrade pip \
+  # "pandas>=0.25.0" installation requires compilation
   && apk add --no-cache --virtual=build-deps \
     g++ \
     gfortran \
     python3-dev \
   && ln -s /usr/include/locale.h /usr/include/xlocale.h \
-  && python3 -m pip install --no-cache-dir --upgrade pip \
-  # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167
-  # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
   && pip install --no-cache-dir "pandas>=0.25.0" \
   && rm -rf /root/.cache \
   && rm /usr/include/xlocale.h \
