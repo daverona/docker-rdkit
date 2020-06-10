@@ -3,68 +3,66 @@
 # DOCKERHUB_NAMESPACE namespace
 # DOCKERHUB_IMAGE     image
 
-image: docker:19.03.8
-
-services:
-  - docker:19.03.8-dind
-
 stages:
   - build
   - release
-  - publish
-
-before_script:
-  - docker version
-  - docker login --username gitlab-ci-token --password $CI_JOB_TOKEN $CI_REGISTRY
-
-after_script:
-  - docker logout $CI_REGISTRY
+  - silly
 
 build:
   stage: build
   only:
-    - branches
-    - tags
+    refs:
+      - branches
+      - tags
+    changes:
+      - Dockerfile
+  image: docker:19.03.8
+  services:
+    - docker:19.03.8-dind
   script:
-    # $CI_COMMIT_REF_NAME should be set and not be empty.
-    - BRANCH_NAME=`[ -z "${CI_COMMIT_REF_NAME##*alpine*}" ] && echo 'alpine' || echo 'master'`
-    - echo -e "Given $CI_COMMIT_REF_NAME\nFound $BRANCH_NAME"
-    - docker image pull $CI_REGISTRY_IMAGE:$BRANCH_NAME || true
+    #- BRANCH_NAME=`[ -z "${CI_COMMIT_REF_NAME##*alpine*}" ] && echo 'alpine' || echo 'master'`
+    #- echo -e "Given $CI_COMMIT_REF_NAME\nFound $BRANCH_NAME"
+    - docker login --username gitlab-ci-token --password $CI_JOB_TOKEN $CI_REGISTRY
+    - docker image pull $CI_REGISTRY_IMAGE:alpine || true
     - > 
       docker image build 
       --pull
-      --cache-from $CI_REGISTRY_IMAGE:$BRANCH_NAME
-      --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+      --cache-from $CI_REGISTRY_IMAGE:alpine
+      --tag $CI_REGISTRY_IMAGE:alpine
       .   
+    - docker image push $CI_REGISTRY_IMAGE:alpine
+    - docker image tag $CI_REGISTRY_IMAGE:alpine $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
     - docker image push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker logout $CI_REGISTRY
 
 release:
+  stage: release
+  dependencies:
+    - build
+  only:
+    refs:
+      - tags
+    changes:
+      - Dockerfile
+  image: docker:19.03.8
+  services:
+    - docker:19.03.8-dind
   variables:
     GIT_STRATEGY: none
-  stage: release
-  only:
-    - tags
   script:
+    - docker login --username gitlab-ci-token --password $CI_JOB_TOKEN $CI_REGISTRY
     - docker image pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
     - docker image tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
     - docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
     - docker image push $DOCKERHUB_NAMESPACE/$DOCKERHUB_IMAGE:$CI_COMMIT_REF_NAME
     - docker logout
+    - docker logout $CI_REGISTRY
 
-publish:
-  stage: publish
+silly:
+  stage: silly
   only:
-    refs:
-      - master
     changes:
+      - LICENSE
       - README.md
   script:
-    - > 
-      docker container run 
-      --rm
-      --volume $PWD/README.md:/var/local/README.md
-      --env DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME
-      --env DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD
-      --env DOCKERHUB_NAMESPACE=$DOCKERHUB_NAMESPACE
-      --env DOCKERHUB_IMAGE=$DOCKERHUB_IMAGE
-      daverona/docker-repo-desc
+    - echo "You silly."
