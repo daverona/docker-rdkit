@@ -63,7 +63,7 @@ Place the following to your `Dockerfile` *before* the last `FROM` command:
 
 ```dockerfile
 ARG RDKIT_VERSION=2020_03_3
-FROM daverona/rdkit:$RDKIT_VERSION-alpine3.10 as rdkit-builder
+FROM daverona/rdkit:$RDKIT_VERSION-alpine3.10 AS rdkit-builder
 ```
 
 Place the following *after* the last `FROM` command:
