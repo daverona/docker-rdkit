@@ -19,13 +19,13 @@ build:
   image: docker:19.03.8
   services:
     - docker:19.03.8-dind
+      #      --cache-from $CI_REGISTRY_IMAGE:alpine
   script:
     - docker login --username gitlab-ci-token --password $CI_JOB_TOKEN $CI_REGISTRY
       #    - docker image pull $CI_REGISTRY_IMAGE:alpine || true
     - > 
       docker image build 
       --pull
-      #      --cache-from $CI_REGISTRY_IMAGE:alpine
       --tag $CI_REGISTRY_IMAGE:alpine
       .   
     - docker image push $CI_REGISTRY_IMAGE:alpine
