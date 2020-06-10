@@ -15,7 +15,7 @@ Available versions are:
 
 | Version | Ubuntu | Alpine |
 |---|---|---|
-| Release\_2020\_03\_3 | [Release\_2020\_03\_3](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2020_03_3/Dockerfile), [latest](https://gitlab.com/daverona/docker/rdkit/-/blob/latest/Dockerfile) | [Release\_2020\_03\_3-alpine3.10](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2020_03_3-alpine3.10/Dockerfile) |
+| 2020\_03\_3 | [2020\_03\_3](https://gitlab.com/daverona/docker/rdkit/-/blob/2020_03_3/Dockerfile), [latest](https://gitlab.com/daverona/docker/rdkit/-/blob/latest/Dockerfile) | [2020\_03\_3-alpine3.10](https://gitlab.com/daverona/docker/rdkit/-/blob/2020_03_3-alpine3.10/Dockerfile) |
 | Release\_2020\_03\_2 | [Release\_2020\_03\_2](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2020_03_2/Dockerfile) | [Release\_2020\_03\_2-alpine3.10](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2020_03_2-alpine3.10/Dockerfile) |
 | Release\_2020\_03\_1 | [Release\_2020\_03\_1](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2020_03_1/Dockerfile) | [Release\_2020\_03\_1-alpine3.10](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2020_03_1-alpine3.10/Dockerfile) |
 | Release\_2019\_09\_3 | [Release\_2019\_09\_3](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2019_09_3/Dockerfile) | [Release\_2019\_09\_3-alpine3.10](https://gitlab.com/daverona/docker/rdkit/-/blob/Release_2019_09_3-alpine3.10/Dockerfile) |
