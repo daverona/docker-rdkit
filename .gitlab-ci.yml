@@ -60,9 +60,5 @@ release:
 
 silly:
   stage: silly
-  only:
-    changes:
-      - LICENSE
-      - README.md
   script:
     - echo "You silly."
