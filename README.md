@@ -1,4 +1,4 @@
-# daverona/rdkit
+# daverona/rdkit <!-- rdkit docker rdkit -->
 
 [`ubuntu`](https://gitlab.com/daverona/docker/rdkit)
 [![pipeline status](https://gitlab.com/daverona/docker/rdkit/badges/master/pipeline.svg)](https://gitlab.com/daverona/docker/rdkit/commits/master)
