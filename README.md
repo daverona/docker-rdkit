@@ -57,21 +57,12 @@ docker container run --rm \
 
 ### Copy to Another Docker Image
 
-To copy RDKit from this image to yours *not as* base image, follow the next steps.
-
-Place the following to your `Dockerfile` *before* the last `FROM` command:
+To copy RDKit from this image to yours *not as* base image, add the following:
 
 ```dockerfile
 ARG RDKIT_VERSION=2020_03_3
-FROM daverona/rdkit:$RDKIT_VERSION-alpine3.10 AS rdkit-builder
-```
-
-Place the following *after* the last `FROM` command:
-
-```dockerfile
-ARG RDKIT_VERSION
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
-COPY --from=rdkit-builder $RDKIT_HOME $RDKIT_HOME
+COPY --from=daverona/rdkit:$RDKIT_VERSION-alpine3.10 $RDKIT_HOME $RDKIT_HOME
 RUN apk add --no-cache \
     boost-iostreams \
     boost-python3 \
@@ -97,8 +88,6 @@ RUN apk add --no-cache \
   && ln -s $RDKIT_HOME/lib/python3.7/site-packages/rdkit /usr/lib/python3.7/site-packages/rdkit
 ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 ```
-
-Then build yours.
 
 ## References
 
