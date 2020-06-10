@@ -22,7 +22,7 @@ RUN apt-get update \
   # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
   && pip install --no-cache-dir "pandas>=0.25.0"
 
-ARG RDKIT_VERSION=Release_2019_03_3
+ARG RDKIT_VERSION=Release_2020_03_3
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
 # Install rdkit
