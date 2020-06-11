@@ -60,7 +60,7 @@ docker container run --rm \
 To copy RDKit from this image to yours *not as* base image, add the following:
 
 ```dockerfile
-# Replace 2020_03_3 (two occurences) with desired version
+# Replace 2020_03_3 with the version you want on the next two lines
 ARG RDKIT_HOME=/usr/local/rdkit/2020_03_3
 COPY --from=daverona/rdkit:2020_03_3 $RDKIT_HOME $RDKIT_HOME
 RUN apt-get update \
