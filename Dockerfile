@@ -22,7 +22,7 @@ RUN apt-get update \
   # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
   && pip install --no-cache-dir "pandas>=0.25.0"
 
-ARG RDKIT_VERSION=2020_03_3
+ARG RDKIT_VERSION=Release_2020_03_3
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
 # Install rdkit
@@ -46,14 +46,14 @@ RUN build_deps="\
   && mkdir -p /tmp/rdkit-$RDKIT_VERSION/build \
   && cd /tmp/rdkit-$RDKIT_VERSION/build \
   && cmake .. \
-    -Wno-dev \
+    -DCMAKE_INSTALL_PREFIX=$RDKIT_HOME \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DPYTHON_EXECUTABLE="$(which python3)" \
+    -DPYTHON_INCLUDE_DIR="$(python3 -c 'from sysconfig import get_paths; print(get_paths()["include"])')" \
     -DRDK_INSTALL_INTREE=OFF \
     -DRDK_BUILD_CAIRO_SUPPORT=ON \
     -DRDK_BUILD_INCHI_SUPPORT=ON \
-    -DPYTHON_EXECUTABLE=/usr/bin/python3.6 \
-    -DPYTHON_INCLUDE_DIR=/usr/include/python3.6 \
-    -DCMAKE_INSTALL_PREFIX=$RDKIT_HOME \
-    -DCMAKE_BUILD_TYPE=Release \
+    -Wno-dev \
   && make -j $(nproc) && make install \
   && ln -s $RDKIT_HOME/lib/python3.6/site-packages/rdkit /usr/local/lib/python3.6/dist-packages/rdkit \
   && RDBASE=/tmp/rdkit-$RDKIT_VERSION LD_LIBRARY_PATH=$RDKIT_HOME/lib ctest \
@@ -67,3 +67,5 @@ ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 WORKDIR /var/local
 
 CMD ["/usr/bin/python3"]
+#    /usr/bin/python3.6 \
+#    /usr/include/python3.6 \
