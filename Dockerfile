@@ -20,12 +20,12 @@ RUN apk add --no-cache \
   && python3 -m pip install --no-cache-dir --upgrade pip \
   # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167 
   # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
-  && pip install --no-cache-dir "pandas>=0.25.0" \
+  && pip3 install --no-cache-dir "pandas>=0.25.0" \
   && rm -rf /root/.cache \
   && rm /usr/include/xlocale.h \
   && apk del --no-cache build-deps
 
-ARG RDKIT_VERSION=2020_03_3
+ARG RDKIT_VERSION=2020_03_4
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
 # Install rdkit dependencies
@@ -42,14 +42,16 @@ RUN apk add --no-cache --virtual=build-deps \
   && mkdir -p /tmp/rdkit-$RDKIT_VERSION/build \
   && cd /tmp/rdkit-$RDKIT_VERSION/build \
   && cmake .. \
-    -Wno-dev \
-    -DRDK_INSTALL_INTREE=OFF \
-    -DRDK_BUILD_CAIRO_SUPPORT=ON \
-    -DRDK_BUILD_INCHI_SUPPORT=ON \
-    -DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
-    -DPYTHON_INCLUDE_DIR=/usr/include/python3.7m \
     -DCMAKE_INSTALL_PREFIX=$RDKIT_HOME \
     -DCMAKE_BUILD_TYPE=Release \
+    -DPYTHON_EXECUTABLE="$(which python3)" \
+    #/usr/bin/python3.7 \
+    -DPYTHON_INCLUDE_DIR="$(python3 -c 'from sysconfig import get_paths; print(get_paths()["include"])')" \
+    #/usr/include/python3.7m \
+    -DRDK_BUILD_CAIRO_SUPPORT=ON \
+    -DRDK_BUILD_INCHI_SUPPORT=ON \
+    -DRDK_INSTALL_INTREE=OFF \
+    -Wno-dev \
   && sed -i "s|__isascii|isascii|" /tmp/rdkit-$RDKIT_VERSION/External/INCHI-API/src/INCHI_BASE/src/util.c \
   && make -j $(nproc) && make install \
   && ln -s $RDKIT_HOME/lib/python3.7/site-packages/rdkit /usr/lib/python3.7/site-packages/rdkit \
