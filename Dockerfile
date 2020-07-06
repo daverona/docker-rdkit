@@ -21,12 +21,12 @@ RUN apk add --no-cache \
   && python3 -m pip install --no-cache-dir --upgrade pip \
   # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167 
   # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
-#  && pip3 install --no-cache-dir "pandas>=0.25.0" \
-#  && rm -rf /root/.cache \
-#  && rm /usr/include/xlocale.h \
+  && pip3 install --no-cache-dir "pandas>=0.25.0" \
+  && rm -rf /root/.cache \
+  && rm /usr/include/xlocale.h \
   && apk del --no-cache build-deps
 
-ARG RDKIT_VERSION=Release_2020_03_3
+ARG RDKIT_VERSION=Release_2020_03_4
 ARG RDKIT_HOME=/usr/local/rdkit/$RDKIT_VERSION
 
 # Install rdkit dependencies
