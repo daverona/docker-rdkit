@@ -8,8 +8,8 @@
 
 This is a repository for Docker images of [RDKit](https://github.com/rdkit/rdkit) (Open-Source Cheminformatics Software) library.
 
-* GitLab source repository: [https://gitlab.com/daverona/docker/rdkit](https://gitlab.com/daverona/docker/rdkit)
-* Docker Hub repository: [https://hub.docker.com/r/daverona/rdkit](https://hub.docker.com/r/daverona/rdkit)
+* GitLab repository: [https://gitlab.com/daverona/docker/rdkit](https://gitlab.com/daverona/docker/rdkit)
+* Docker registry: [https://hub.docker.com/r/daverona/rdkit](https://hub.docker.com/r/daverona/rdkit)
 
 Available versions are:
 
@@ -86,5 +86,5 @@ ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 
 ## References
 
-* RDKit source repository: [https://github.com/rdkit/rdkit](https://github.com/rdkit/rdkit)
 * RDKit documentation: [https://www.rdkit.org/docs/Install.html](https://www.rdkit.org/docs/Install.html)
+* RDKit repository: [https://github.com/rdkit/rdkit](https://github.com/rdkit/rdkit)
