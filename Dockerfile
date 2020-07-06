@@ -21,9 +21,9 @@ RUN apk add --no-cache \
   && python3 -m pip install --no-cache-dir --upgrade pip \
   # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167 
   # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
-  && pip3 install --no-cache-dir "pandas>=0.25.0" \
-  && rm -rf /root/.cache \
-  && rm /usr/include/xlocale.h \
+#  && pip3 install --no-cache-dir "pandas>=0.25.0" \
+#  && rm -rf /root/.cache \
+#  && rm /usr/include/xlocale.h \
   && apk del --no-cache build-deps
 
 ARG RDKIT_VERSION=Release_2020_03_3
@@ -43,7 +43,7 @@ RUN apk add --no-cache --virtual=build-deps \
   && mkdir -p /tmp/rdkit-$RDKIT_VERSION/build \
   && cd /tmp/rdkit-$RDKIT_VERSION/build \
   # This is a patch for Boost 1.72.0. Not required for 1.56.0.
-  && sed -i -e "255s|QUIET|system iostreams QUIET|" -e "263s|REQUIRED|system iostreams REQUIRED|" ../CMakeListstxt \
+  && sed -i -e "255s|QUIET|system iostreams QUIET|" -e "263s|REQUIRED|system iostreams REQUIRED|" ../CMakeLists.txt \
   && cmake .. \
     -DCMAKE_INSTALL_PREFIX=$RDKIT_HOME \
     -DCMAKE_BUILD_TYPE=Release \
