@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.12
 
 # Install rdkit dependencies
 RUN apk add --no-cache \
@@ -11,6 +11,7 @@ RUN apk add --no-cache \
     py3-cairo \
     py3-numpy \
     py3-pillow \
+    py3-pip \
     python3 \
   && apk add --no-cache --virtual=build-deps \
     g++ \
@@ -36,11 +37,13 @@ RUN apk add --no-cache --virtual=build-deps \
     cairo-dev \
     cmake \
     eigen-dev \
-    py-numpy-dev \
+    py3-numpy-dev \
     python3-dev \
   && wget --quiet --output-document=- https://github.com/rdkit/rdkit/archive/$RDKIT_VERSION.tar.gz | tar -zxvf - -C /tmp \
   && mkdir -p /tmp/rdkit-$RDKIT_VERSION/build \
   && cd /tmp/rdkit-$RDKIT_VERSION/build \
+  # This is a patch for Boost 1.72.0. Not required for 1.56.0.
+  && sed -i -e "255s|QUIET|system iostreams QUIET|" -e "263s|REQUIRED|system iostreams REQUIRED|" ../CMakeListstxt \
   && cmake .. \
     -DCMAKE_INSTALL_PREFIX=$RDKIT_HOME \
     -DCMAKE_BUILD_TYPE=Release \
