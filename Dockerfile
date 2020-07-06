@@ -11,6 +11,7 @@ RUN apk add --no-cache \
     py3-cairo \
     py3-numpy \
     py3-pillow \
+    py3-pip \
     python3 \
   && apk add --no-cache --virtual=build-deps \
     g++ \
