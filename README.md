@@ -61,9 +61,9 @@ docker container run --rm \
 To copy RDKit from this image to yours *not as* base image, add the following:
 
 ```dockerfile
-# Replace 2020_03_3 with the version you want on the next two lines
-ARG RDKIT_HOME=/usr/local/rdkit/2020_03_3
-COPY --from=daverona/rdkit:2020_03_3 $RDKIT_HOME $RDKIT_HOME
+# Replace Release_2020_03_4 with the version you want on the next two lines
+ARG RDKIT_HOME=/usr/local/rdkit/Release_2020_03_4
+COPY --from=daverona/rdkit:Release_2020_03_4 $RDKIT_HOME $RDKIT_HOME
 RUN apt-get update \
   && apt-get install --yes --quiet --no-install-recommends \
     libboost-iostreams1.65.1 \
