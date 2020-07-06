@@ -3,7 +3,7 @@ FROM alpine:3.12
 # Install rdkit dependencies
 RUN apk add --no-cache \
     boost-iostreams \
-    boost-libs \
+#    boost-libs \
     boost-python3 \
     boost-regex \
     boost-serialization \
@@ -19,7 +19,7 @@ RUN apk add --no-cache \
     gfortran \
     python3-dev \
   && ln -s /usr/include/locale.h /usr/include/xlocale.h \
-  && python3 -m pip install --no-cache-dir --upgrade pip \
+  && python3 -m pip install --no-cache-dir --upgrade pip setuptools \
   # Note that pandas needs to be updated to 0.25 or higher. Without it, Test #167 
   # will fail with "ModuleNotFoundError: No module named 'pandas.io.formats.html'"
 #  && pip3 install --no-cache-dir "pandas>=0.25.0" \
