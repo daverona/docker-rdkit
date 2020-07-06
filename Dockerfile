@@ -42,7 +42,8 @@ RUN apk add --no-cache --virtual=build-deps \
   && wget --quiet --output-document=- https://github.com/rdkit/rdkit/archive/$RDKIT_VERSION.tar.gz | tar -zxvf - -C /tmp \
   && mkdir -p /tmp/rdkit-$RDKIT_VERSION/build \
   && cd /tmp/rdkit-$RDKIT_VERSION/build \
-  # This is a patch for Boost 1.72.0. Not required for 1.56.0.
+  # Note that this is a patch for boost 1.72.0 (not required for 1.56.0).
+  # @see https://github.com/OpenMS/OpenMS/issues/4393#issue-532012670
   && sed -i -e "255s|QUIET|system iostreams QUIET|" -e "263s|REQUIRED|system iostreams REQUIRED|" ../CMakeLists.txt \
   && cmake .. \
     -DCMAKE_INSTALL_PREFIX=$RDKIT_HOME \
