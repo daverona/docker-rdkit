@@ -7,6 +7,7 @@ RUN apk add --no-cache \
     boost-python3 \
     boost-regex \
     boost-serialization \
+    boost-static \
     boost-system \
     eigen \
     py3-cairo \
