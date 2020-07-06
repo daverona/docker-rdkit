@@ -3,6 +3,7 @@ FROM alpine:3.12
 # Install rdkit dependencies
 RUN apk add --no-cache \
     boost-iostreams \
+    boost-libs \
     boost-python3 \
     boost-regex \
     boost-serialization \
