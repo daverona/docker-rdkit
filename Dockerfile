@@ -37,7 +37,7 @@ RUN apk add --no-cache --virtual=build-deps \
     cairo-dev \
     cmake \
     eigen-dev \
-    py-numpy-dev \
+    py3-numpy-dev \
     python3-dev \
   && wget --quiet --output-document=- https://github.com/rdkit/rdkit/archive/$RDKIT_VERSION.tar.gz | tar -zxvf - -C /tmp \
   && mkdir -p /tmp/rdkit-$RDKIT_VERSION/build \
