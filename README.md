@@ -12,14 +12,6 @@ This is a repository for Docker images of [RDKit](https://github.com/rdkit/rdkit
 * Docker registry: [https://hub.docker.com/r/daverona/rdkit](https://hub.docker.com/r/daverona/rdkit)
 * Available releases: [https://gitlab.com/daverona/docker/rdkit/-/releases](https://gitlab.com/daverona/docker/rdkit/-/releases)
 
-## Installation
-
-Pull the image from Docker Hub repository:
-
-```bash
-docker image pull daverona/rdkit
-```
-
 ## Quick Start
 
 Run the container:
