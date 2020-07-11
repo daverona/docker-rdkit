@@ -10,7 +10,7 @@ This is a repository for Docker images of [RDKit](https://github.com/rdkit/rdkit
 
 * GitLab repository: [https://gitlab.com/daverona/docker/rdkit](https://gitlab.com/daverona/docker/rdkit)
 * Docker registry: [https://hub.docker.com/r/daverona/rdkit](https://hub.docker.com/r/daverona/rdkit)
-* Available releases: [https://gitlab.com/daverona/docker/rdkit/\-/releases](https://gitlab.com/daverona/docker/rdkit/-/releases)
+* Available releases: [https://gitlab.com/daverona/docker/rdkit/-/releases](https://gitlab.com/daverona/docker/rdkit/-/releases)
 
 ## Installation
 
