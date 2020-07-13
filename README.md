@@ -66,3 +66,4 @@ ENV LD_LIBRARY_PATH=$RDKIT_HOME/lib:$LD_LIBRARY_PATH
 
 * RDKit documentation: [https://www.rdkit.org/docs/Install.html](https://www.rdkit.org/docs/Install.html)
 * RDKit repository: [https://github.com/rdkit/rdkit](https://github.com/rdkit/rdkit)
+
