@@ -16,7 +16,6 @@ This is a repository for Docker images of [RDKit](https://github.com/rdkit/rdkit
 
 Run a container:
 
-
 ```bash
 docker container run --rm \
   --interactive --tty \
@@ -32,5 +31,5 @@ rdkit.__verions__
 
 ## References
 
-* RDKit documentation: [https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md](https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md)
 * RDKit repository: [https://github.com/rdkit/rdkit](https://github.com/rdkit/rdkit)
+* RDKit installation: [https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md](https://github.com/rdkit/rdkit/blob/master/Docs/Book/Install.md)
